@@ -1,0 +1,26 @@
+1 说说下面的几个方法，分别锁的是什么东西？
+
+ public static synchronized void doIt(){xx};  //synchronized关键字修饰在静态方法上，锁的是类
+ pubilc  syncronzied void doIt() {xxx)        //synchronized关键字修饰在实例方法，锁的是该类的实例对象
+ pubilc void doIt(){ syncronized(myobj) ....} //synchronized块，锁的是myobj对象
+
+ 2 说说为什么下面的代码是错误的
+ public void doIt() { syncronized(new ObjA()) {xxxx} //synchronized块锁的是新创建的对象，其不会起到任何的同步作用。
+
+
+ 3 说说下面的代码为什么是错误的
+
+ public void doIt() {synchrnized(myobj) { if(xxx) { myobjA.wait();}...}
+ //调用某个对象的wait()方法,notify(),notifyAll()方法的前提是获得该对象的锁，上面synchronized锁的是对象myobj,并没有获得myobjA的锁，
+ 所以下面调用myobjA.wait()方法会报错，报IllegalMonitorStateException
+
+
+ 4 将05作业-TestOnly.java 中的代码中的错误一一修订，并确保其永远执行成功
+
+
+
+加分题
+1 用Lock方式与ReadWriteLock方式 对第四题进行改进，并说明思路
+2 用多线程方式实现第二课的第四题，其中计算线程数为8个，可能的思路：
+       文件的总记录读取后分为8份，每个线程处理一份，所有线程都完成后，再累计汇总，输出结果
+
