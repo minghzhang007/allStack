@@ -9,11 +9,6 @@ import java.util.concurrent.Callable;
  * 负责连接告警服务器，并发送告警信息到告警服务器
  */
 public class AlarmAgent{
-    private static AlarmAgent alarm = new AlarmAgent();
-
-    public static AlarmAgent getAlarmAgent(){
-        return alarm;
-    }
 
     //用于记录AlarmAgent是否连接上告警服务器
     private volatile boolean connectedToServer = false;

@@ -5,7 +5,8 @@ package com.lewis.multiThreadPattern.guidedSuspension;
  */
 public class Client {
     public static void main(String[] args) {
-        AlarmAgent alarmAgent = AlarmAgent.getAlarmAgent();
+        AlarmAgent alarmAgent = AlarmAgentFactory.getAlarmAgent();
+        alarmAgent.init();
         /*new Thread(){
             @Override
             public void run() {

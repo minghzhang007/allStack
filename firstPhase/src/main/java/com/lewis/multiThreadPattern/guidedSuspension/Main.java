@@ -5,7 +5,7 @@ package com.lewis.multiThreadPattern.guidedSuspension;
  */
 public class Main {
     public static void main(String[] args) {
-        AlarmAgent alarmAgent = AlarmAgent.getAlarmAgent();
+        AlarmAgent alarmAgent = AlarmAgentFactory.getAlarmAgent();
         try {
            new Thread(){
                @Override
@@ -16,7 +16,7 @@ public class Main {
                        e.printStackTrace();
                    }
                    System.out.println("will init...");
-                   alarmAgent.init();
+                  // alarmAgent.init();
                }
            }.start();
             alarmAgent.sendAlarm(new AlarmInfo());
