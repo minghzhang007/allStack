@@ -25,8 +25,9 @@
         <module name="firstPhase" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="firstPhase" target="1.5" />
+    <bytecodeTargetLevel target="1.8">
+      <module name="allStack" target="1.8" />
+      <module name="firstPhase" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

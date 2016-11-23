@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/allStack.iml" filepath="$PROJECT_DIR$/.idea/allStack.iml" />
       <module fileurl="file://$PROJECT_DIR$/firstPhase/firstPhase.iml" filepath="$PROJECT_DIR$/firstPhase/firstPhase.iml" />
     </modules>
   </component>
