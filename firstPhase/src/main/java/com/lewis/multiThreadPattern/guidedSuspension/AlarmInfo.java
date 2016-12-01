@@ -41,4 +41,13 @@ public class AlarmInfo {
     public void setExtralInfo(String extralInfo) {
         this.extralInfo = extralInfo;
     }
+
+    @Override
+    public String toString() {
+        return "AlarmInfo{" +
+                "id='" + id + '\'' +
+                ", extralInfo='" + extralInfo + '\'' +
+                ", type=" + type +
+                '}';
+    }
 }

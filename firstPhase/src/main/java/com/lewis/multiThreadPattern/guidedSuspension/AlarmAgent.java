@@ -10,6 +10,10 @@ import java.util.concurrent.Callable;
  */
 public class AlarmAgent{
 
+    public AlarmAgent(){
+        init();
+    }
+
     //用于记录AlarmAgent是否连接上告警服务器
     private volatile boolean connectedToServer = false;
 
