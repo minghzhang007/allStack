@@ -5,7 +5,17 @@ package com.lewis.firstPhase.baseDataStructure;
  */
 public class HexByte {
     public static void main(String[] args) {
-
+        int x=0xf0;
+        byte b = (byte)0xf0;
+        System.out.println(x);
+        System.out.println(b & 0xff);
+        int flag = 0B01101000;
+        int i = (flag & 0B00110000) >> 4;
+        System.out.println(flag);
+        System.out.println(i);
+        String name="lewis";
+        System.out.println();
+        System.out.println(1<<13);
     }
 
     public static void test(){

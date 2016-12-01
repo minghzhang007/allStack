@@ -1,10 +1,6 @@
 package com.lewis.firstPhase.baseDataStructure;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
+import java.util.*;
 
 /**
  * Created by zhangminghua on 2016/11/20.
@@ -21,6 +17,7 @@ import java.util.stream.Collectors;
  */
 public class FifthTopic {
     public static void main(String[] args) {
+       // advanceFunction();
         advanceFunction();
     }
 
@@ -31,12 +28,47 @@ public class FifthTopic {
         for (int i = 0; i < 1000; i++) {
             itemList.add(new MyItem((byte) r.nextInt(128),(byte)r.nextInt(128),(byte)r.nextInt(128)));
         }
-        List<MyItem> sortedItems = itemList.stream().sorted(Comparator.comparing(MyItem::getPrice).reversed()).collect(Collectors.toList());
-        int size = sortedItems.size();
+        int size = itemList.size();
         for (int i = 0; i < size; i++) {
-            byteStore.putMyItem(i,sortedItems.get(i));
+            byteStore.putMyItem(i,itemList.get(i));
         }
-        sortedItems.stream().limit(100).forEach(System.out::println);
+
+        byte[] array = byteStore.getStoreByteArray();
+        int length = array.length;
+        for (int i = 2; i < length; i=i+3) {
+            for (int j = i+3; j < length; j=j+3) {
+                if (array[i] < array[j]) {
+                    byte tmp = array[i];
+                    array[i] = array[j];
+                    array[j] = tmp;
+                }
+            }
+        }
+        List<MyItem> sortedMyItemList = new ArrayList<>(100);
+        for (int i = 0; i < 100; i++) {
+            sortedMyItemList.add(byteStore.getMyItem(i));
+        }
+        sortedMyItemList.stream().forEach(System.out::println);
+    }
+
+    public static void sortObj(){
+        Random r = new Random();
+        List<MyItem> itemList = new ArrayList<>(1000);
+        ByteStore byteStore = new ByteStore(new byte[3000]);
+        for (int i = 0; i < 1000; i++) {
+            itemList.add(new MyItem((byte) r.nextInt(128),(byte)r.nextInt(128),(byte)r.nextInt(128)));
+        }
+        int size = itemList.size();
+        for (int i = 0; i < size; i++) {
+            for (int j = i+1; j < size; j++) {
+                if (itemList.get(i).getPrice() < itemList.get(j).getPrice()) {
+                    MyItem  tmp = itemList.get(i);
+                    itemList.set(i,itemList.get(j));
+                    itemList.set(j,tmp);
+                }
+            }
+        }
+        itemList.stream().limit(100).forEach(System.out::println);
     }
 
     public static void basicFunction(){
