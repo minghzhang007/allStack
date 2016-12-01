@@ -2,10 +2,8 @@ package com.lewis.multiThreadPattern.TwoPhaseTermination;
 
 import com.lewis.multiThreadPattern.guidedSuspension.AlarmAgent;
 import com.lewis.multiThreadPattern.guidedSuspension.AlarmInfo;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -28,6 +26,7 @@ public class AlarmSendingThread extends AbsTerminatableThread {
     @Override
     protected void doRun() throws Exception {
         AlarmInfo alarm;
+        TimeUnit.MILLISECONDS.sleep(1000);
         alarm = alarmQueue.take();
         terminationToken.reservations.decrementAndGet();
         try {

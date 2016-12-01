@@ -20,6 +20,7 @@ public abstract class AbsTerminatableThread extends Thread implements Terminatab
      */
     public AbsTerminatableThread(TerminationToken terminationToken) {
         super();
+        setName("AbsTerminatableThread");
         this.terminationToken = terminationToken;
         terminationToken.register(this);
     }

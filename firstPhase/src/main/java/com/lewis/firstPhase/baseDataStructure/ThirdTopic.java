@@ -1,5 +1,7 @@
 package com.lewis.firstPhase.baseDataStructure;
 
+import java.util.Random;
+
 /**
  * Created by Administrator on 2016/11/19.
  *
@@ -29,15 +31,18 @@ public class ThirdTopic{
         System.out.println(array.getClass().getName());
         long beginTime= System.currentTimeMillis();
         long sum = accessRowPrior(array);
-        System.out.println("sum is "+sum +" costTime is "+(System.currentTimeMillis()-beginTime));
-
+        System.out.println("accessRowPrior  sum is "+sum +" costTime is "+(System.currentTimeMillis()-beginTime));
+        beginTime= System.currentTimeMillis();
+        sum = accessColumnPrior(array);
+        System.out.println("accessColumnPrior sum is "+sum +" costTime is "+(System.currentTimeMillis()-beginTime));
+        System.out.println(Runtime.getRuntime().availableProcessors());
     }
 
     public static long accessRowPrior(byte[][] array){
         long sum = 0;
         for (int i = 0; i < array.length; i++) {
-            byte[] subArray = array[i];
-            for (int j = 0; j < subArray.length; j++) {
+            int subArrayLength = array[i].length;
+            for (int j = 0; j < subArrayLength; j++) {
                 sum += array[i][j];
             }
         }
@@ -47,21 +52,22 @@ public class ThirdTopic{
     public static long accessColumnPrior(byte[][] array){
         long sum = 0;
         for (int i = 0; i < array.length; i++) {
-            byte[] subArray = array[i];
-            for (int j = 0; j < subArray.length; j++) {
-                sum += array[i][j];
+            int subArrayLength = array[i].length;
+            for (int j = 0; j < subArrayLength; j++) {
+                sum += array[j][i];
             }
         }
         return sum;
     }
 
     private static byte[][] getBytesArray() {
+        Random r = new Random();
         byte[][] array = new byte[10240][10240];
         int length = array.length;
         for (int i = 0; i < length; i++) {
-            byte[] subArray = array[i];
-            for (int j = 0; j <subArray.length ; j++) {
-                array[i][j]=100;
+            int subArrayLength =  array[i].length;
+            for (int j = 0; j < subArrayLength; j++) {
+                array[i][j]=(byte)r.nextInt(128);
             }
         }
         return array;
