@@ -19,4 +19,12 @@ public class SwapUtil {
             array[i] = array[i] ^ array[j];
         }
     }
+
+    public static void xorsSwap(byte[] array, int i, int j) {
+        if (i != j) {
+            array[i] = (byte) (array[i] ^ array[j]);
+            array[j] = (byte) (array[j] ^ array[i]);
+            array[i] = (byte) (array[i] ^ array[j]);
+        }
+    }
 }

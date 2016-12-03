@@ -1,10 +1,10 @@
 package com.lewis.firstPhase.baseDataStructure;
 
+import com.lewis.sort.SwapUtil;
+
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 /**
  * Created by zhangminghua on 2016/11/20.
@@ -21,48 +21,43 @@ import java.util.stream.Collectors;
  */
 public class FifthTopic {
     public static void main(String[] args) {
-        //advanceFunction();
-        basicFunction();
-    }
-
-    public static void advanceFunctionBak(){
-        Random r = new Random();
-        List<MyItem> itemList = new ArrayList<>(1000);
-        ByteStore byteStore = new ByteStore(new byte[3000]);
-        for (int i = 0; i < 1000; i++) {
-            itemList.add(new MyItem((byte) r.nextInt(128),(byte)r.nextInt(128),(byte)r.nextInt(128)));
-        }
-        int size = itemList.size();
-        for (int i = 0; i < size; i++) {
-            byteStore.putMyItem(i,itemList.get(i));
-        }
-        
-        byte[] byteArray = byteStore.getStoreByteArray();
-        for (int i = 2; i < byteArray.length; i=i+3) {
-
-            for (int j = i+3; j < byteArray.length; j=j+3) {
-                /*if (byteArray[j] > ) {
-
-                }*/
-            }
-        }
-
+        //basicFunction();
+        advanceFunction();
     }
 
     public static void advanceFunction(){
         Random r = new Random();
-        List<MyItem> itemList = new ArrayList<>(1000);
-        ByteStore byteStore = new ByteStore(new byte[3000]);
-        for (int i = 0; i < 1000; i++) {
+        int size = 1000;
+        List<MyItem> itemList = new ArrayList<>(size);
+        ByteStore byteStore = new ByteStore(new byte[size*3]);
+        for (int i = 0; i < size; i++) {
             itemList.add(new MyItem((byte) r.nextInt(128),(byte)r.nextInt(128),(byte)r.nextInt(128)));
         }
-        List<MyItem> sortedItems = itemList.stream().sorted(Comparator.comparing(MyItem::getPrice).reversed()).collect(Collectors.toList());
-        int size = sortedItems.size();
         for (int i = 0; i < size; i++) {
-            byteStore.putMyItem(i,sortedItems.get(i));
+            byteStore.putMyItem(i,itemList.get(i));
         }
-        sortedItems.stream().limit(100).forEach(System.out::println);
+
+        byte[] byteArray = byteStore.getStoreByteArray();
+        //使用冒泡算法排序
+        for (int i = 2; i < byteArray.length; i=i+3) {
+            for (int j = i+3; j < byteArray.length; j=j+3) {
+                if (byteArray[j] > byteArray[i]) {
+                    SwapUtil.xorsSwap(byteArray,j,i);
+                    SwapUtil.xorsSwap(byteArray,j-1,i-1);
+                    SwapUtil.xorsSwap(byteArray,j-2,i-2);
+                }
+            }
+        }
+
+        List<MyItem> sortedList = new ArrayList<>();
+        for (int i = 0; i < byteStore.getSize(); i++) {
+            sortedList.add(byteStore.getMyItem(i));
+        }
+        System.out.println();
+        System.out.println("after sort:");
+        sortedList.stream().limit(100).forEach(System.out::println);
     }
+
 
     public static void basicFunction(){
         MyItem item1= new MyItem((byte)1,(byte)52,(byte)100);
@@ -92,6 +87,7 @@ public class FifthTopic {
 class ByteStore {
     private byte[] storeByteArray = null;
     private int indexBounds;
+    private int size;
 
     public ByteStore(byte[] storeByteArray) {
         this.storeByteArray = storeByteArray;
@@ -104,6 +100,7 @@ class ByteStore {
             storeByteArray[byteIndex] = item.getType();
             storeByteArray[byteIndex + 1] = item.getColor();
             storeByteArray[byteIndex + 2] = item.getPrice();
+            size++;
             return true;
         }
         return false;
@@ -124,6 +121,10 @@ class ByteStore {
 
     public byte[] getStoreByteArray() {
         return storeByteArray;
+    }
+
+    public int getSize() {
+        return size;
     }
 }
 
