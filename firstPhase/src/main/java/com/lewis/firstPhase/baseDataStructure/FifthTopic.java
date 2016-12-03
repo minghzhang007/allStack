@@ -1,6 +1,10 @@
 package com.lewis.firstPhase.baseDataStructure;
 
-import java.util.*;
+import com.lewis.sort.SwapUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Created by zhangminghua on 2016/11/20.
@@ -17,61 +21,46 @@ import java.util.*;
  */
 public class FifthTopic {
     public static void main(String[] args) {
-       // advanceFunction();
-        advanceFunction();
+        FifthTopic fifthTopic = new FifthTopic();
+        fifthTopic.basicFunction();
+        fifthTopic.advanceFunction();
     }
 
-    public static void advanceFunction(){
+    public void advanceFunction(){
         Random r = new Random();
-        List<MyItem> itemList = new ArrayList<>(1000);
-        ByteStore byteStore = new ByteStore(new byte[3000]);
-        for (int i = 0; i < 1000; i++) {
+        int size = 1000;
+        List<MyItem> itemList = new ArrayList<>(size);
+        ByteStore byteStore = new ByteStore(new byte[size*3]);
+        for (int i = 0; i < size; i++) {
             itemList.add(new MyItem((byte) r.nextInt(128),(byte)r.nextInt(128),(byte)r.nextInt(128)));
         }
-        int size = itemList.size();
         for (int i = 0; i < size; i++) {
             byteStore.putMyItem(i,itemList.get(i));
         }
 
-        byte[] array = byteStore.getStoreByteArray();
-        int length = array.length;
-        for (int i = 2; i < length; i=i+3) {
-            for (int j = i+3; j < length; j=j+3) {
-                if (array[i] < array[j]) {
-                    byte tmp = array[i];
-                    array[i] = array[j];
-                    array[j] = tmp;
+        byte[] byteArray = byteStore.getStoreByteArray();
+        //使用冒泡算法排序
+        for (int i = 2; i < byteArray.length; i=i+3) {
+            for (int j = i+3; j < byteArray.length; j=j+3) {
+                if (byteArray[j] > byteArray[i]) {
+                    SwapUtil.xorsSwap(byteArray,j,i);
+                    SwapUtil.xorsSwap(byteArray,j-1,i-1);
+                    SwapUtil.xorsSwap(byteArray,j-2,i-2);
                 }
             }
         }
-        List<MyItem> sortedMyItemList = new ArrayList<>(100);
-        for (int i = 0; i < 100; i++) {
-            sortedMyItemList.add(byteStore.getMyItem(i));
+
+        List<MyItem> sortedList = new ArrayList<>();
+        for (int i = 0; i < byteStore.getSize(); i++) {
+            sortedList.add(byteStore.getMyItem(i));
         }
-        sortedMyItemList.stream().forEach(System.out::println);
+        System.out.println();
+        System.out.println("after sort:");
+        sortedList.stream().limit(100).forEach(System.out::println);
     }
 
-    public static void sortObj(){
-        Random r = new Random();
-        List<MyItem> itemList = new ArrayList<>(1000);
-        ByteStore byteStore = new ByteStore(new byte[3000]);
-        for (int i = 0; i < 1000; i++) {
-            itemList.add(new MyItem((byte) r.nextInt(128),(byte)r.nextInt(128),(byte)r.nextInt(128)));
-        }
-        int size = itemList.size();
-        for (int i = 0; i < size; i++) {
-            for (int j = i+1; j < size; j++) {
-                if (itemList.get(i).getPrice() < itemList.get(j).getPrice()) {
-                    MyItem  tmp = itemList.get(i);
-                    itemList.set(i,itemList.get(j));
-                    itemList.set(j,tmp);
-                }
-            }
-        }
-        itemList.stream().limit(100).forEach(System.out::println);
-    }
 
-    public static void basicFunction(){
+    public void basicFunction(){
         MyItem item1= new MyItem((byte)1,(byte)52,(byte)100);
         MyItem item2= new MyItem((byte)2,(byte)56,(byte)110);
         MyItem item3= new MyItem((byte)3,(byte)96,(byte)29);
@@ -94,45 +83,55 @@ public class FifthTopic {
         System.out.println("item2.equals(item21) "+item2.equals(item21));
         System.out.println("item3.equals(item31) "+item3.equals(item31));
     }
+
+
+
+    class ByteStore {
+        private byte[] storeByteArray = null;
+        private int indexBounds;
+        private int size;
+
+        public ByteStore(byte[] storeByteArray) {
+            this.storeByteArray = storeByteArray;
+            indexBounds = storeByteArray.length / 3 - 1;
+        }
+
+        public boolean putMyItem(int index, MyItem item) {
+            if (checkIndex(index) && item != null) {
+                int byteIndex=index * 3;
+                storeByteArray[byteIndex] = item.getType();
+                storeByteArray[byteIndex + 1] = item.getColor();
+                storeByteArray[byteIndex + 2] = item.getPrice();
+                size++;
+                return true;
+            }
+            return false;
+        }
+
+
+        public MyItem getMyItem(int index) {
+            if (checkIndex(index)) {
+                int byteIndex=index * 3;
+                return new MyItem(storeByteArray[byteIndex],storeByteArray[byteIndex+1],storeByteArray[byteIndex+2]);
+            }
+            return null;
+        }
+
+        private boolean checkIndex(int index) {
+            return index <= indexBounds;
+        }
+
+        public byte[] getStoreByteArray() {
+            return storeByteArray;
+        }
+
+        public int getSize() {
+            return size;
+        }
+    }
 }
 
-class ByteStore {
-    private byte[] storeByteArray = null;
-    private int indexBounds;
 
-    public ByteStore(byte[] storeByteArray) {
-        this.storeByteArray = storeByteArray;
-        indexBounds = storeByteArray.length / 3 - 1;
-    }
-
-    public boolean putMyItem(int index, MyItem item) {
-        if (checkIndex(index) && item != null) {
-            int byteIndex=index * 3;
-            storeByteArray[byteIndex] = item.getType();
-            storeByteArray[byteIndex + 1] = item.getColor();
-            storeByteArray[byteIndex + 2] = item.getPrice();
-            return true;
-        }
-        return false;
-    }
-
-
-    public MyItem getMyItem(int index) {
-        if (checkIndex(index)) {
-            int byteIndex=index * 3;
-            return new MyItem(storeByteArray[byteIndex],storeByteArray[byteIndex+1],storeByteArray[byteIndex+2]);
-        }
-        return null;
-    }
-
-    private boolean checkIndex(int index) {
-        return index <= indexBounds;
-    }
-
-    public byte[] getStoreByteArray() {
-        return storeByteArray;
-    }
-}
 
 class MyItem {
     private byte type;
