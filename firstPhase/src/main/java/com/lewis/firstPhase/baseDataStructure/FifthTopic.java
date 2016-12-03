@@ -21,7 +21,32 @@ import java.util.stream.Collectors;
  */
 public class FifthTopic {
     public static void main(String[] args) {
-        advanceFunction();
+        //advanceFunction();
+        basicFunction();
+    }
+
+    public static void advanceFunctionBak(){
+        Random r = new Random();
+        List<MyItem> itemList = new ArrayList<>(1000);
+        ByteStore byteStore = new ByteStore(new byte[3000]);
+        for (int i = 0; i < 1000; i++) {
+            itemList.add(new MyItem((byte) r.nextInt(128),(byte)r.nextInt(128),(byte)r.nextInt(128)));
+        }
+        int size = itemList.size();
+        for (int i = 0; i < size; i++) {
+            byteStore.putMyItem(i,itemList.get(i));
+        }
+        
+        byte[] byteArray = byteStore.getStoreByteArray();
+        for (int i = 2; i < byteArray.length; i=i+3) {
+
+            for (int j = i+3; j < byteArray.length; j=j+3) {
+                /*if (byteArray[j] > ) {
+
+                }*/
+            }
+        }
+
     }
 
     public static void advanceFunction(){

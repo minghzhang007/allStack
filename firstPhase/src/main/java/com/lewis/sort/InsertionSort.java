@@ -12,21 +12,22 @@ import java.util.Arrays;
  * 对于0到N-1之间的每个i,将a[i]与 a[0]到a[i-1]中比它小的所有元素依次有序的交换，在索引i由左向右
  * 的过程中，它左侧的元素总是有序的，所以当i到达数组的右端时排序就完成了。
  */
-public class InsertionSort {
+public class InsertionSort implements ISortable{
 
     public static void main(String[] args) {
+        InsertionSort insertionSort = new InsertionSort();
         int[] array = ArrayFactory.createIntArray(10000, 10000000);
         int[] newArray = Arrays.copyOf(array, array.length);
         //System.out.println("preSort:" + Arrays.toString(array));
         long beginTime = System.currentTimeMillis();
-        advanceInsertSort(array);
+        insertionSort.advanceInsertSort(array);
         System.out.println("advanceInsertSort costTime is " + (System.currentTimeMillis() - beginTime));
         beginTime = System.currentTimeMillis();
-        sort(newArray);
+        insertionSort.sort(newArray);
         System.out.println("sort costTime is " + (System.currentTimeMillis() - beginTime));
     }
 
-    public static void sort(int[] array) {
+    public  void sort(int[] array) {
         int length = array.length;
         for (int i = 1; i < length; i++) {
             //将array[i] 插入到array[i-1],array[i-2],array[i-3],array[i-4]...之中
@@ -41,7 +42,7 @@ public class InsertionSort {
     /**
      * 要大幅提高插入排序的速度，只需要在内循环中将较大的元素都向右移动，而不是总是交换两个元素，这样访问数组的次数就能减半
      */
-    public static void advanceInsertSort(int[] array) {
+    public void advanceInsertSort(int[] array) {
         int length = array.length;
         int j = 0;
         for (int i = 1; i < length; i++) {

@@ -14,43 +14,20 @@ import java.util.Arrays;
  * 3． i++由前向后找比它大的数，找到后也挖出此数填到前一个坑 a[j]中。
  * 4． 再重复执行 2， 3 二步，直到 i==j，将基准数填入 a[i]中。
  */
-public class QuickSort {
+public class QuickSort implements ISortable{
 
     public static void main(String[] args) {
-        int[] array = ArrayFactory.createIntArray(10, 1000);
-        System.out.println("preSort:" + Arrays.toString(array));
-        sort(array, 0, array.length - 1);
-        System.out.println("postSort:" + Arrays.toString(array));
+        int[] array = ArrayFactory.createIntArray(10, 100);
+        System.out.println(Arrays.toString(array));
+        QuickSort quickSort = new QuickSort();
+        quickSort.sort(array);
+        System.out.println(Arrays.toString(array));
     }
 
-    public static void sort(int[] array, int left, int right) {
-        if (left > right) {
-            return;
-        }
-        int centerIndex = partition(array, left, right);//切分
-        sort(array, left, centerIndex - 1);//将左半部分排序array[left...centerIndex-1]
-        sort(array, centerIndex + 1, right);//将右半部分排序array[centerIndex+1...right]
-    }
 
-    public static int partition(int[] a, int left, int right) {
-        int i = left, j = right;
-        int x = a[left];
-        while (i < j) {
-            while (i < j && a[j] >= x)
-                j--;
-            if (i < j) a[i++] = a[j];
-
-            while (i < j && a[i] <= x)
-                i++;
-            if (i < j)  a[j--] = a[i];
-        }
-        a[i] = x;
-        return i;
-    }
 
     //返回调整后基准数的位置
     public static int adjustArray(int[] array, int left, int right) {
-        System.out.println("adjust Array :" + Arrays.toString(array));
         //array[left] 就是第一个坑
         int vo = array[left];
         int i = left;
@@ -75,16 +52,19 @@ public class QuickSort {
         }
         //退出时，i==j,将vo填到这个坑中
         array[i] = vo;
-        System.out.println("exit adjustArray i :" + i + ", j:" + j);
-        System.out.println("adjust Array :" + Arrays.toString(array));
         return i;
     }
 
-    public static void quickSort(int[] array, int left, int right) {
+    public  void quickSort(int[] array, int left, int right) {
         if (left < right) {
             int i = adjustArray(array, left, right);
             quickSort(array, left, i - 1);
             quickSort(array, i + 1, right);
         }
+    }
+
+    @Override
+    public void sort(int[] array) {
+        quickSort(array,0,array.length-1);
     }
 }

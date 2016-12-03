@@ -9,16 +9,17 @@ import java.util.Arrays;
  * 再次，在剩下的元素中找出最小的元素，将它与数组的第二个元素交换位置；
  * 如此往复，直到整个数组排序完成。
  */
-public class SelectionSort {
+public class SelectionSort implements ISortable{
 
     public static void main(String[] args) {
+        SelectionSort selectionSort = new SelectionSort();
         int[] array = ArrayFactory.createIntArray(200, 1000);
         System.out.println("preSort :" + Arrays.toString(array));
-        sort(array);
+        selectionSort.sort(array);
         System.out.println("postSort:" + Arrays.toString(array));
     }
 
-    public static void sort(int[] array) {
+    public void sort(int[] array) {
         int length = array.length;
         for (int i = 0; i < length; i++) {
             int min = i;

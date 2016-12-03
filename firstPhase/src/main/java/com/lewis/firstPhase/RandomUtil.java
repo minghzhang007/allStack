@@ -9,7 +9,7 @@ public final class RandomUtil {
 
     private RandomUtil(){}
 
-    public static int getRandomInt(int max, int min) {
+    public static int getRandomInt(int min,int max) {
         Random random = new Random();
         return random.nextInt(max) % (max - min + 1) + min;
     }

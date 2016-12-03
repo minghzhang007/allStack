@@ -79,8 +79,8 @@ public class FourthTopic {
             int batchIndex = 0;
             for (int i = 0; i < count; i++) {
                 sb.append(RandomUtil.getRandomString(5))
-                        .append(",").append(RandomUtil.getRandomInt(1000000, 5))
-                        .append(",").append(RandomUtil.getRandomInt(100000, 0)).append("\n");
+                        .append(",").append(RandomUtil.getRandomInt(5,1000000))
+                        .append(",").append(RandomUtil.getRandomInt (0,100000)).append("\n");
                 bw.write(sb.toString());
                 sb.delete(0,sb.toString().length());
                 batchIndex ++;
