@@ -21,11 +21,12 @@ import java.util.Random;
  */
 public class FifthTopic {
     public static void main(String[] args) {
-        //basicFunction();
-        advanceFunction();
+        FifthTopic fifthTopic = new FifthTopic();
+        fifthTopic.basicFunction();
+        fifthTopic.advanceFunction();
     }
 
-    public static void advanceFunction(){
+    public void advanceFunction(){
         Random r = new Random();
         int size = 1000;
         List<MyItem> itemList = new ArrayList<>(size);
@@ -59,7 +60,7 @@ public class FifthTopic {
     }
 
 
-    public static void basicFunction(){
+    public void basicFunction(){
         MyItem item1= new MyItem((byte)1,(byte)52,(byte)100);
         MyItem item2= new MyItem((byte)2,(byte)56,(byte)110);
         MyItem item3= new MyItem((byte)3,(byte)96,(byte)29);
@@ -82,51 +83,55 @@ public class FifthTopic {
         System.out.println("item2.equals(item21) "+item2.equals(item21));
         System.out.println("item3.equals(item31) "+item3.equals(item31));
     }
+
+
+
+    class ByteStore {
+        private byte[] storeByteArray = null;
+        private int indexBounds;
+        private int size;
+
+        public ByteStore(byte[] storeByteArray) {
+            this.storeByteArray = storeByteArray;
+            indexBounds = storeByteArray.length / 3 - 1;
+        }
+
+        public boolean putMyItem(int index, MyItem item) {
+            if (checkIndex(index) && item != null) {
+                int byteIndex=index * 3;
+                storeByteArray[byteIndex] = item.getType();
+                storeByteArray[byteIndex + 1] = item.getColor();
+                storeByteArray[byteIndex + 2] = item.getPrice();
+                size++;
+                return true;
+            }
+            return false;
+        }
+
+
+        public MyItem getMyItem(int index) {
+            if (checkIndex(index)) {
+                int byteIndex=index * 3;
+                return new MyItem(storeByteArray[byteIndex],storeByteArray[byteIndex+1],storeByteArray[byteIndex+2]);
+            }
+            return null;
+        }
+
+        private boolean checkIndex(int index) {
+            return index <= indexBounds;
+        }
+
+        public byte[] getStoreByteArray() {
+            return storeByteArray;
+        }
+
+        public int getSize() {
+            return size;
+        }
+    }
 }
 
-class ByteStore {
-    private byte[] storeByteArray = null;
-    private int indexBounds;
-    private int size;
 
-    public ByteStore(byte[] storeByteArray) {
-        this.storeByteArray = storeByteArray;
-        indexBounds = storeByteArray.length / 3 - 1;
-    }
-
-    public boolean putMyItem(int index, MyItem item) {
-        if (checkIndex(index) && item != null) {
-            int byteIndex=index * 3;
-            storeByteArray[byteIndex] = item.getType();
-            storeByteArray[byteIndex + 1] = item.getColor();
-            storeByteArray[byteIndex + 2] = item.getPrice();
-            size++;
-            return true;
-        }
-        return false;
-    }
-
-
-    public MyItem getMyItem(int index) {
-        if (checkIndex(index)) {
-            int byteIndex=index * 3;
-            return new MyItem(storeByteArray[byteIndex],storeByteArray[byteIndex+1],storeByteArray[byteIndex+2]);
-        }
-        return null;
-    }
-
-    private boolean checkIndex(int index) {
-        return index <= indexBounds;
-    }
-
-    public byte[] getStoreByteArray() {
-        return storeByteArray;
-    }
-
-    public int getSize() {
-        return size;
-    }
-}
 
 class MyItem {
     private byte type;
