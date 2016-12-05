@@ -62,4 +62,15 @@ public class InsertionSort implements ISortable{
         }
     }
 
+    //二分插入法排序
+    public void binaryInsertSort(int[] array){
+        int length = array.length;
+        int j =0;
+        for (int i = 1; i < length; i++) {
+            int tmp = array[i];
+
+
+        }
+    }
+
 }

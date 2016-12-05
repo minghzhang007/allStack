@@ -55,7 +55,6 @@ public class AdvancedFifthTopic {
             bytes[0] = item.getType();
             bytes[1] = item.getColor();
             bytes[2] = item.getPrice();
-            bytes[3] = 0;
             int intValue = BinaryUtil.byteArray2Int(bytes);
             setValue(index,intValue);
             return true;

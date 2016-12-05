@@ -42,7 +42,11 @@ public class BinaryUtil {
         return v0|v1|v2|v3;
     }
 
-    public static String getBinaryString(String str) {
+    public static String getFormatBinaryString(int i){
+        return getFormatBinaryString(Integer.toBinaryString(i));
+    }
+
+    public static String getFormatBinaryString(String str) {
         if (str != null) {
             StringBuilder sb = new StringBuilder();
             char[] chars = str.toCharArray();
