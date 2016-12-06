@@ -42,6 +42,19 @@ public class SecondTopic {
         FileInputStream fis = null;
         try {
             fis = new FileInputStream(file);
+            if (file.getName().equals("littleEndian.txt")) {
+                byte[] byte1 = new byte[4];
+                fis.read(byte1);
+                /*int anInt = getInt(byte1, 0);
+                System.out.println("anInt:"+anInt);*/
+                byte[] bigEndian = new byte[4];
+                for (int i = 0; i < byte1.length; i++) {
+                    bigEndian[i]=byte1[byte1.length-1-i];
+                }
+                System.out.println(Arrays.toString(byte1));
+                System.out.println(Arrays.toString(bigEndian));
+                System.out.println("LittleEndian read int :"+BinaryUtil.byteArray2Int(byte1));
+            }
             int readInt = fis.read();
             byte[] bytes = new byte[4];
             fis.read(bytes);
@@ -84,5 +97,12 @@ public class SecondTopic {
                 }
             }
         }
+    }
+
+    static int getInt(byte[] b, int off) {
+        return ((b[off + 3] & 0xFF)      ) +
+                ((b[off + 2] & 0xFF) <<  8) +
+                ((b[off + 1] & 0xFF) << 16) +
+                ((b[off    ]       ) << 24);
     }
 }

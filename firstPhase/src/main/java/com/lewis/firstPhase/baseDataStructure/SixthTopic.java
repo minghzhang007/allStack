@@ -1,5 +1,11 @@
 package com.lewis.firstPhase.baseDataStructure;
 
+import com.lewis.sort.ArrayFactory;
+import sun.rmi.runtime.Log;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
 /**
  * Created by zhangminghua on 2016/12/3.
  * 6题
@@ -20,11 +26,25 @@ package com.lewis.firstPhase.baseDataStructure;
  * 1<<13的数值为8192
  */
 public class SixthTopic {
+
     public static void main(String[] args) {
-        System.out.println(1<<13);
-        for (int i = 1; i <= 13; i++) {
-            System.out.println("i<< "+i+" 值为："+ (1<<i));
-        }
+        int[] intArray = ArrayFactory.createIntArray(1 << 19, 20000);
+        int[] newArray = ArrayFactory.createIntArray(1 << 22, 20000);
+        int[] intArrays = Arrays.copyOf(intArray, intArray.length);
+        int[] newArrays = Arrays.copyOf(newArray, newArray.length);
+        long beginTime = System.currentTimeMillis();
+        Arrays.parallelSort(intArray);
+        System.out.println("parallelSort 1<<19 costTime #"+(System.currentTimeMillis()-beginTime));
+        beginTime = System.currentTimeMillis();
+        Arrays.parallelSort(newArray);
+        System.out.println("parallelSort 1 << 22 costTime #"+(System.currentTimeMillis()-beginTime));
+        System.out.println(Runtime.getRuntime().availableProcessors());
+        beginTime = System.currentTimeMillis();
+        Arrays.sort(intArrays);
+        System.out.println("sort 1<<19 costTime#"+(System.currentTimeMillis()-beginTime));
+        beginTime = System.currentTimeMillis();
+        Arrays.sort(newArrays);
+        System.out.println("sort 1<<22 costTime#"+(System.currentTimeMillis()-beginTime));
     }
 
    /*
