@@ -4,6 +4,7 @@ import com.lewis.firstPhase.RandomUtil;
 import com.lewis.firstPhase.Salary;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -19,23 +20,38 @@ public class FourthTopic {
     public static void main(String[] args) {
         long beginTime = System.currentTimeMillis();
         File file = new File("D:\\allStack\\salarys.txt");
-        //generateSalaryFile(file);
+        //generateSalaryFile(file,10000000);
         List<Salary> salaryList = readSalariesFromFile(file);
         System.out.println(salaryList.size());
         Map<String, List<Salary>> map = salaryList.stream().collect(Collectors.groupingBy(salary -> salary.getName().substring(0, 2)));
-        Map<String,Integer> name2MoneyMap = new HashMap<>();
         //map.forEach( (String key,List<Salary> s) -> s.stream().forEach(name2MoneyMap.put(key,)));
+        Map<String,Long> name2TotalMoneyMap = new HashMap<>();
+        Map<String,Integer> name2CountMap = new HashMap<>();
         if (map != null && map.size() > 0) {
             Iterator<Map.Entry<String, List<Salary>>> it = map.entrySet().iterator();
             while (it.hasNext()) {
+                Long totalMoney = 0L;
+                Integer count = 0;
                 Map.Entry<String, List<Salary>> entry = it.next();
                 if (!entry.getValue().isEmpty()) {
                     for (Salary salary : entry.getValue()) {
-                        int money = getSalary(salary);
+                        totalMoney +=getSalary(salary);
+                        count ++;
                     }
                 }
+                name2CountMap.put(entry.getKey(),count);
+                name2TotalMoneyMap.put(entry.getKey(),totalMoney);
             }
         }
+        List<Map.Entry<String,Long>> list = new LinkedList<>();
+        list.addAll(name2TotalMoneyMap.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<String, Long>>() {
+            @Override
+            public int compare(Map.Entry<String, Long> o1, Map.Entry<String, Long> o2) {
+                return o2.getValue().compareTo(o1.getValue());
+            }
+        });
+        System.out.println(list);
         System.out.println("costTime is "+(System.currentTimeMillis()- beginTime));
     }
 
@@ -69,11 +85,10 @@ public class FourthTopic {
         return salaryList;
     }
 
-    private static void generateSalaryFile(File file) {
-        int count = 10000000;
+    private static void generateSalaryFile(File file,int count) {
         BufferedWriter bw = null;
         try {
-            bw = new BufferedWriter(new FileWriter(file,true));
+            bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), Charset.forName("utf-8")));
             StringBuilder sb = new StringBuilder();
             int batchSize =10000;
             int batchIndex = 0;
