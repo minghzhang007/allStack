@@ -6,9 +6,11 @@ package com.lewis.sort;
 public class BinaryUtil {
 
     /**
-     * 将一个int拆成4个byte组成的数组 【第一个byte 高8位】  【第二个byte 次高8位】  【第三个byte 次低8位】 【第四个byte 低8位】
-     *
-     * @param i
+     * 将一个int拆成4个byte组成的数组
+     * 【第一个byte 高8位】
+     * 【第二个byte 次高8位】
+     * 【第三个byte 次低8位】
+     * 【第四个byte 低8位】
      * @return 4个byte组成的数组
      */
     public static byte[] int2ByteArray(int i) {
