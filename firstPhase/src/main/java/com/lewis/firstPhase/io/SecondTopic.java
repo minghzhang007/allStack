@@ -14,19 +14,17 @@ public class SecondTopic {
 
     public static void main(String[] args) {
         int i = 10240;
-        bigEndian(i);
-        littleEndian(i);
+        int j =2621440;
+        System.out.println(getIntUsingBigEndian(BinaryUtil.int2ByteArray(j),0));
+      /*  bigEndian(i);
+        littleEndian(i);*/
     }
 
     public static void bigEndian(int i){
         File file = new File("D:\\bigEndin.txt");
         byte[] bytes = BinaryUtil.int2ByteArray(i);
-        byte[] newBytes = new byte[4];
-        for (int j = 0; j < bytes.length; j++) {
-            newBytes[j] = bytes[bytes.length-1-j];
-        }
-        System.out.println(Arrays.toString(newBytes));
-        printFile(file,newBytes);
+        System.out.println("bigEndian bytes"+Arrays.toString(bytes));
+        printFile(file,bytes,i);
         readFile(file);
     }
 
@@ -34,7 +32,7 @@ public class SecondTopic {
         File file = new File("D:\\littleEndian.txt");
         byte[] bytes = BinaryUtil.int2ByteArray(i);
         System.out.println(Arrays.toString(bytes));
-        printFile(file,bytes);
+        printFile(file,bytes,i);
         readFile(file);
     }
 
@@ -42,10 +40,10 @@ public class SecondTopic {
         FileInputStream fis = null;
         try {
             fis = new FileInputStream(file);
-            int readInt = fis.read();
+            //int readInt = fis.read();
             byte[] bytes = new byte[4];
             fis.read(bytes);
-            System.out.println("readInt from file :"+ readInt);
+            //System.out.println("readInt from file :"+ readInt);
             System.out.println("readBytes:"+Arrays.toString(bytes));
             System.out.println("read bytes2Int:"+BinaryUtil.byteArray2Int(bytes));
         } catch (FileNotFoundException e) {
@@ -63,11 +61,10 @@ public class SecondTopic {
         }
     }
 
-    public static void printFile(File file,byte[] bytes){
+    public static void printFile(File file,byte[] bytes,int i){
         FileOutputStream fos = null;
         try {
-            int i = BinaryUtil.byteArray2Int(bytes);
-            System.out.println("i ="+i);
+            //int i = BinaryUtil.byteArray2Int(bytes);
             fos = new FileOutputStream(file,false);
             fos.write(bytes);
             fos.flush();
@@ -84,5 +81,19 @@ public class SecondTopic {
                 }
             }
         }
+    }
+
+    public static int getIntUsingBigEndian(byte[] bytes,int off){
+        int vo = 0;
+        int v0 = bytes[off] >> 24;
+        int v1 = (bytes[off + 1] >> 16) & 0xff;
+        int v2 = (bytes[off + 2] >> 8) & 0xff;
+        int v3 = (bytes[off + 3]) & 0xff;
+        vo = v0+ v1 + v2+v3;
+        return vo;
+    }
+
+    public static int getIntUsingLittleEndian(byte[] bytes,int off){
+        return 0;
     }
 }

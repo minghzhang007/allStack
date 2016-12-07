@@ -6,6 +6,7 @@ import com.lewis.firstPhase.Salary;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -19,12 +20,20 @@ import java.util.stream.Collectors;
 public class FourthTopic {
     public static void main(String[] args) {
         long beginTime = System.currentTimeMillis();
+        //basicFunction();
+        File file = new File("D:\\allStack\\salarys.txt");
+        //generateSalaryFile(file,10000000);
+        readSalariesFromFile(file);
+        System.out.println("costTime is #"+(System.currentTimeMillis()-beginTime));
+
+    }
+
+    public static void basicFunction(){
         File file = new File("D:\\allStack\\salarys.txt");
         //generateSalaryFile(file,10000000);
         List<Salary> salaryList = readSalariesFromFile(file);
         System.out.println(salaryList.size());
         Map<String, List<Salary>> map = salaryList.stream().collect(Collectors.groupingBy(salary -> salary.getName().substring(0, 2)));
-        //map.forEach( (String key,List<Salary> s) -> s.stream().forEach(name2MoneyMap.put(key,)));
         Map<String,Long> name2TotalMoneyMap = new HashMap<>();
         Map<String,Integer> name2CountMap = new HashMap<>();
         if (map != null && map.size() > 0) {
@@ -51,15 +60,25 @@ public class FourthTopic {
                 return o2.getValue().compareTo(o1.getValue());
             }
         });
-        System.out.println(list);
-        System.out.println("costTime is "+(System.currentTimeMillis()- beginTime));
+        List<Map.Entry<String, Long>> topTenList = list.stream().limit(10).collect(Collectors.toList());
+        topTenList.stream().forEach( e -> {
+            String key = e.getKey();
+            Long value = e.getValue();
+            Integer count = name2CountMap.get(key);
+            System.out.println(key+","+value/10000+"万"+","+count+"个人");
+        });
+        AtomicInteger totalCount =new AtomicInteger(0);
+        list.stream().forEach( (Map.Entry<String, Long> e) ->{
+            totalCount.getAndAdd(name2CountMap.get(e.getKey()));
+        });
+        System.out.println(totalCount.get());
     }
 
     public static int getSalary(Salary salary){
         return salary.getBaseSalary() * 13 + salary.getBonus();
     }
 
-    private static List<Salary> readSalariesFromFile(File file) {
+    public static List<Salary> readSalariesFromFile(File file) {
         List<Salary> salaryList = new LinkedList<>();
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
