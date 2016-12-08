@@ -28,36 +28,6 @@ public class BinaryTest {
         System.out.println(BinaryUtil.getFormatBinaryString(i >> 16));
     }
 
-    public static void justTest(){
-        int number = 2000000000;
-        String binaryString = Integer.toBinaryString(number);
-        System.out.println(binaryString);
-        String s = BinaryUtil.getFormatBinaryString(binaryString);
-        System.out.println(s);
-
-        byte i = (byte) ((number >> 24) & 0xff);
-        System.out.println(BinaryUtil.getFormatBinaryString(Integer.toBinaryString(i)));
-
-        byte j = (byte)((number >> 16) & 0xff);
-        System.out.println(BinaryUtil.getFormatBinaryString(Integer.toBinaryString(j)));
-
-        byte l = (byte)((number >> 8) & 0xff);
-        System.out.println(BinaryUtil.getFormatBinaryString(Integer.toBinaryString(l)));
-
-        byte k = (byte)((number) & 0xff);
-        System.out.println(BinaryUtil.getFormatBinaryString(Integer.toBinaryString(k)));
-        byte[] a = int2Bytes(number);
-        System.out.println(Arrays.toString(a));
-        System.out.println();
-        System.out.println();
-        for (byte b : a) {
-            System.out.println(BinaryUtil.getFormatBinaryString(Integer.toBinaryString(b)));
-        }
-
-        System.out.println(BinaryUtil.byteArray2Int(a));
-
-    }
-
 
     //0011 1011  1001 1010  1100 1010  0000 0000
     //0011 1011  1001 1010  1100 1010  0000 0000

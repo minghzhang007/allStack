@@ -11,6 +11,7 @@ public class BinaryUtil {
      * 【第二个byte 次高8位】
      * 【第三个byte 次低8位】
      * 【第四个byte 低8位】
+     *
      * @return 4个byte组成的数组
      */
     public static byte[] int2ByteArray(int i) {
@@ -41,14 +42,14 @@ public class BinaryUtil {
         int v3 = bytes[3] & 0x000000ff;
         //i = v0 + v1 + v2 + v3;
         //int i = v0|v1|v2|v3;
-        return v0|v1|v2|v3;
+        return v0 | v1 | v2 | v3;
     }
 
-    public static String getFormatBinaryString(int i){
-        return getFormatBinaryString(Integer.toBinaryString(i));
+    public static String getFormatBinaryString(int i) {
+        return getWholeBinaryBits(Integer.toBinaryString(i));
     }
 
-    public static String getFormatBinaryString(String str) {
+    /*public static String getFormatBinaryString(String str) {
         if (str != null) {
             StringBuilder sb = new StringBuilder();
             char[] chars = str.toCharArray();
@@ -75,5 +76,51 @@ public class BinaryUtil {
             return sb.toString();
         }
         return "";
+    }*/
+
+    public static String getWholeBinaryBits(String str) {
+        StringBuilder sb = new StringBuilder();
+        if (str != null && str.length() > 0) {
+            char[] chars = str.toCharArray();
+            int insertLength = 32-chars.length;
+            int batchIndex = 0;
+            for (int i = 0; i < insertLength; i++) {
+                if (batchIndex == 4) {
+                    sb.append(" ");
+                    batchIndex = 0;
+                }
+                sb.append("0");
+                batchIndex++;
+            }
+
+            StringBuilder builder= new StringBuilder();
+            int index = 0;
+            if (chars != null && chars.length > 0) {
+                for (int i = chars.length - 1; i >= 0; i--) {
+                    if (index == 4) {
+                        builder.append(" ");
+                        index = 0;
+                    }
+                    builder.append(chars[i]);
+                    index++;
+                }
+            }
+            String s = builder.reverse().toString();
+            if (s != null && s.length() > 0) {
+                String[] split = s.split(" ");
+                String s1 = split[0];
+                if (s1.length() == 4) {
+                    sb.append(" ");
+                }
+            }
+            System.out.println("s ="+s);
+            sb.append(s);
+        }
+        return sb.toString();
+    }
+
+    public static void main(String[] args) {
+        String wholeBinaryBits = getFormatBinaryString(10240);
+        System.out.println(wholeBinaryBits);
     }
 }
