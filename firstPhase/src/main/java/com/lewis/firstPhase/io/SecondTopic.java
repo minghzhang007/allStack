@@ -3,7 +3,6 @@ package com.lewis.firstPhase.io;
 import com.lewis.sort.BinaryUtil;
 
 import java.io.*;
-import java.util.Arrays;
 
 /**
  * Created by zhangminghua on 2016/12/6.
@@ -13,7 +12,7 @@ import java.util.Arrays;
 public class SecondTopic {
 
     public static void main(String[] args) {
-        int i = 10240;
+        /*int i = 10240;
         byte[] bytes = BinaryUtil.int2ByteArray(i);
         System.out.println(Arrays.toString(bytes));
         int i1 = BinaryUtil.byteArray2Int(bytes);
@@ -24,26 +23,28 @@ public class SecondTopic {
         BinaryUtil.printByteEleAsBinary(reverseBytes);
         int x = BinaryUtil.reverseInt(i);
         System.out.println(x);
-        System.out.println(BinaryUtil.getFormatBinaryString(x));
+        System.out.println(BinaryUtil.getFormatBinaryString(x));*/
+        int i = 10240;
+        bigEndian(i);
+        littleEndian(i);
     }
 
     public static void bigEndian(int i) {
         File file = new File("D:\\bigEndin.txt");
         byte[] bytes = BinaryUtil.int2ByteArray(i);
-        byte[] newBytes = new byte[4];
+        /*byte[] newBytes = new byte[4];
         for (int j = 0; j < bytes.length; j++) {
             newBytes[j] = bytes[bytes.length - 1 - j];
-        }
-        System.out.println(Arrays.toString(newBytes));
-        printFile(file, newBytes);
+        }*/
+        printFile(file, bytes);
         readFile(file);
     }
 
     public static void littleEndian(int i) {
         File file = new File("D:\\littleEndian.txt");
         byte[] bytes = BinaryUtil.int2ByteArray(i);
-        System.out.println(Arrays.toString(bytes));
-        printFile(file, bytes);
+        byte[] reverseBytes = BinaryUtil.reverseBytes(bytes);
+        printFile(file, reverseBytes);
         readFile(file);
     }
 
@@ -54,22 +55,13 @@ public class SecondTopic {
             if (file.getName().equals("littleEndian.txt")) {
                 byte[] byte1 = new byte[4];
                 fis.read(byte1);
-                /*int anInt = getInt(byte1, 0);
-                System.out.println("anInt:"+anInt);*/
-                byte[] bigEndian = new byte[4];
-                for (int i = 0; i < byte1.length; i++) {
-                    bigEndian[i] = byte1[byte1.length - 1 - i];
-                }
-                System.out.println(Arrays.toString(byte1));
-                System.out.println(Arrays.toString(bigEndian));
-                System.out.println("LittleEndian read int :" + BinaryUtil.byteArray2Int(byte1));
+                System.out.println("LittleEndian direct read int :" + BinaryUtil.byteArray2Int(byte1));
+                System.out.println("LittleEndian reverse read int :" + BinaryUtil.byteArray2Int(BinaryUtil.reverseBytes(byte1)));
+            }else{
+                byte[] bytes = new byte[4];
+                fis.read(bytes);
+                System.out.println("read bytes2Int:" + BinaryUtil.byteArray2Int(bytes));
             }
-            int readInt = fis.read();
-            byte[] bytes = new byte[4];
-            fis.read(bytes);
-            System.out.println("readInt from file :" + readInt);
-            System.out.println("readBytes:" + Arrays.toString(bytes));
-            System.out.println("read bytes2Int:" + BinaryUtil.byteArray2Int(bytes));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -88,8 +80,6 @@ public class SecondTopic {
     public static void printFile(File file, byte[] bytes) {
         FileOutputStream fos = null;
         try {
-            int i = BinaryUtil.byteArray2Int(bytes);
-            System.out.println("i =" + i);
             fos = new FileOutputStream(file, false);
             fos.write(bytes);
             fos.flush();
