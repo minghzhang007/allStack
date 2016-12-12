@@ -6,7 +6,6 @@ import com.lewis.firstPhase.Salary;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -19,19 +18,17 @@ import java.util.stream.Collectors;
  */
 public class FourthTopic {
     public static void main(String[] args) {
-        long beginTime = System.currentTimeMillis();
-        //basicFunction();
         File file = new File("D:\\allStack\\salarys.txt");
+        List<Salary> salaryList = readSalariesFromFile(file);
+        long beginTime = System.currentTimeMillis();
+        basicFunction(salaryList);
         //generateSalaryFile(file,10000000);
-        readSalariesFromFile(file);
+        //readSalariesFromFile(file);
         System.out.println("costTime is #"+(System.currentTimeMillis()-beginTime));
 
     }
 
-    public static void basicFunction(){
-        File file = new File("D:\\allStack\\salarys.txt");
-        //generateSalaryFile(file,10000000);
-        List<Salary> salaryList = readSalariesFromFile(file);
+    public static void basicFunction(List<Salary> salaryList){
         System.out.println(salaryList.size());
         Map<String, List<Salary>> map = salaryList.stream().collect(Collectors.groupingBy(salary -> salary.getName().substring(0, 2)));
         Map<String,Long> name2TotalMoneyMap = new HashMap<>();
@@ -60,18 +57,18 @@ public class FourthTopic {
                 return o2.getValue().compareTo(o1.getValue());
             }
         });
-        List<Map.Entry<String, Long>> topTenList = list.stream().limit(10).collect(Collectors.toList());
+        List<Map.Entry<String, Long>> topTenList = list.stream().limit(100).collect(Collectors.toList());
         topTenList.stream().forEach( e -> {
             String key = e.getKey();
             Long value = e.getValue();
             Integer count = name2CountMap.get(key);
             System.out.println(key+","+value/10000+"万"+","+count+"个人");
         });
-        AtomicInteger totalCount =new AtomicInteger(0);
+       /* AtomicInteger totalCount =new AtomicInteger(0);
         list.stream().forEach( (Map.Entry<String, Long> e) ->{
             totalCount.getAndAdd(name2CountMap.get(e.getKey()));
         });
-        System.out.println(totalCount.get());
+        System.out.println(totalCount.get());*/
     }
 
     public static int getSalary(Salary salary){

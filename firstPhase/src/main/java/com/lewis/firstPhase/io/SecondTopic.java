@@ -32,10 +32,6 @@ public class SecondTopic {
     public static void bigEndian(int i) {
         File file = new File("D:\\bigEndin.txt");
         byte[] bytes = BinaryUtil.int2ByteArray(i);
-        /*byte[] newBytes = new byte[4];
-        for (int j = 0; j < bytes.length; j++) {
-            newBytes[j] = bytes[bytes.length - 1 - j];
-        }*/
         printFile(file, bytes);
         readFile(file);
     }
