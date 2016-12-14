@@ -5,7 +5,6 @@ import com.lewis.firstPhase.RandomUtil;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.Arrays;
@@ -14,7 +13,7 @@ import java.util.PriorityQueue;
 /**
  * Created by zhangminghua on 2016/12/7.
  */
-public class AdvanceSecondTopic1 {
+public class AdvanceSecondTopic2 {
 
     public static void main(String[] args) {
         long bT = System.currentTimeMillis();
@@ -77,30 +76,20 @@ public class AdvanceSecondTopic1 {
                 count[index] += 1;
                 namePreArray[index] = namePreBytes;
             }
-            PriorityQueue<ByteBuffer> queue = new PriorityQueue<>(10,
-                    (o1, o2) -> {
-                        return Long.compare(o2.getLong(0), o1.getLong(0));
-                    }
-            );
+            /*List<Record> list = new ArrayList<>(4096);
             for (int i = 0; i < totalSalaryArray.length; i++) {
-                ByteBuffer buffer = ByteBuffer.allocate(14);
-                buffer.putLong(totalSalaryArray[i]);
-                buffer.putInt(count[i]);
-                buffer.put(namePreArray[i]);
-                buffer.position(0);
-                queue.add(buffer);
+                list.add(new Record(totalSalaryArray[i],count[i],new String(namePreArray[i])));
+            }
+            Collections.sort(list);
+            list.stream().forEach(record ->  System.out.printf("%s,%d万,%d个\n", record.getNamePre(), record.getTotalSalary()/10000, record.getCount()));*/
+            PriorityQueue<Record> queue = new PriorityQueue<>(10);
+            for (int i = 0; i < totalSalaryArray.length; i++) {
+                queue.add(new Record(totalSalaryArray[i],count[i],new String(namePreArray[i])));
             }
 
-            StringBuilder sb = new StringBuilder();
             for (int i = 0; i < 4096; i++) {
-                ByteBuffer buffer = queue.poll();
-                long tatalSalary = buffer.getLong();
-                int count = buffer.getInt();
-                byte[] name = new byte[2];
-                buffer.get(name);
-                sb.append(new String(name)).append(",").append("totalSalary:").append(tatalSalary/10000).append("万,count:").append(count);
-                System.out.println(sb.toString());
-                sb.delete(0, sb.toString().length());
+                Record record = queue.poll();
+                System.out.printf("%s,%d万,%d个\n", record.getNamePre(), record.getTotalSalary()/10000, record.getCount());
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
