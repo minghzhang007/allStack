@@ -15,7 +15,7 @@ public class AdvanceSecondTopic1 {
 
     public static void main(String[] args) {
         long bT = System.currentTimeMillis();
-       // generateFile("D:\\allStack\\1.txt",10000000);
+        // generateFile("D:\\allStack\\1.txt",10000000);
         group("D:\\allStack\\1.txt");
         System.out.println("costTime:"+(System.currentTimeMillis()- bT));
 
@@ -45,29 +45,49 @@ public class AdvanceSecondTopic1 {
             e.printStackTrace();
         }
     }
+    //62*62 =3844 < 2^12=4096
+    private static int[] totalSalaryArray = new int[4096];
+
+    private static int[] count = new int[4096];
+
+    private static byte[] namePre = new byte[2];
 
     public static void group(String fileName){
         try {
             RandomAccessFile raf = new RandomAccessFile(fileName,"r");
             FileChannel channel = raf.getChannel();
             MappedByteBuffer byteBuffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
-            int i =0;
             while (byteBuffer.position() < byteBuffer.limit()) {
                 byte[] nameBytes = new byte[5];
                 byteBuffer.get(nameBytes);
                 int baseSalary = byteBuffer.getInt();
                 int bonus = byteBuffer.getInt();
-                String name = new String(nameBytes);
-                if (i < 100) {
-                    System.out.println("i = "+i +" "+name+",baseSalary:"+baseSalary+", bonus:"+bonus);
-                }
-                i++;
+                int totalSalary = baseSalary *13+bonus;
+                namePre[0] = nameBytes[0];
+                namePre[1] = nameBytes[1];
+                int index = index(namePre);
+                totalSalaryArray[index] += totalSalary;
+                count[index] +=1;
+            }
+
+            for (int i = 0; i < totalSalaryArray.length; i++) {
+
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static int index(Object obj){
+        int hash = hash(obj);
+        return hash & (totalSalaryArray.length-1);
+    }
+
+    public static int hash(Object obj){
+        int h = obj.hashCode();
+        return h ^ (h >>> 16);
     }
 
 }
