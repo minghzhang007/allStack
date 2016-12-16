@@ -17,7 +17,6 @@ public class ForthTopic {
         salaries.stream().sorted(Comparator.comparing((Salary s)-> s.getBaseSalary()*13+s.getBonus()).reversed())
                 .limit(10).forEach(System.out::println);
     }
-
 }
 
 

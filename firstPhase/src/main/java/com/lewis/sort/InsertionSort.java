@@ -12,22 +12,26 @@ import java.util.Arrays;
  * 对于0到N-1之间的每个i,将a[i]与 a[0]到a[i-1]中比它小的所有元素依次有序的交换，在索引i由左向右
  * 的过程中，它左侧的元素总是有序的，所以当i到达数组的右端时排序就完成了。
  */
-public class InsertionSort implements ISortable{
+public class InsertionSort implements ISortable {
 
     public static void main(String[] args) {
         InsertionSort insertionSort = new InsertionSort();
-        int[] array = ArrayFactory.createIntArray(10000, 10000000);
+        int[] array = ArrayFactory.createIntArray(10, 100);
         int[] newArray = Arrays.copyOf(array, array.length);
-        //System.out.println("preSort:" + Arrays.toString(array));
+        int[] array1 = Arrays.copyOf(array, array.length);
+
+        System.out.println("preSort:" + Arrays.toString(array));
         long beginTime = System.currentTimeMillis();
         insertionSort.advanceInsertSort(array);
         System.out.println("advanceInsertSort costTime is " + (System.currentTimeMillis() - beginTime));
         beginTime = System.currentTimeMillis();
         insertionSort.sort(newArray);
         System.out.println("sort costTime is " + (System.currentTimeMillis() - beginTime));
+        insertionSort.insertSort(array1);
+        System.out.println(Arrays.toString(array1));
     }
 
-    public  void sort(int[] array) {
+    public void sort(int[] array) {
         int length = array.length;
         for (int i = 1; i < length; i++) {
             //将array[i] 插入到array[i-1],array[i-2],array[i-3],array[i-4]...之中
@@ -63,14 +67,32 @@ public class InsertionSort implements ISortable{
     }
 
     //二分插入法排序
-    public void binaryInsertSort(int[] array){
+    public void binaryInsertSort(int[] array) {
         int length = array.length;
-        int j =0;
+        int j = 0;
         for (int i = 1; i < length; i++) {
             int tmp = array[i];
 
 
         }
+    }
+
+    public void insertSort(int[] array) {
+        int length = array.length;
+        int j = 0;
+        for (int i = 1; i < length; i++) {
+            //element to be insert
+            int tmp = array[i];
+            for (j = i; j > 0; j--) {
+                if (tmp > array[j-1]) {
+                    break;
+                } else {
+                    array[j] = array[j - 1];
+                }
+            }
+            array[j] = tmp;
+        }
+
     }
 
 }

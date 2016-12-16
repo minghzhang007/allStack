@@ -22,7 +22,7 @@ import java.util.Random;
 public class FifthTopic {
     public static void main(String[] args) {
         FifthTopic fifthTopic = new FifthTopic();
-        fifthTopic.basicFunction();
+        //fifthTopic.basicFunction();
         fifthTopic.advanceFunction();
     }
 
@@ -49,12 +49,10 @@ public class FifthTopic {
                 }
             }
         }
-
         List<MyItem> sortedList = new ArrayList<>();
         for (int i = 0; i < byteStore.getSize(); i++) {
             sortedList.add(byteStore.getMyItem(i));
         }
-        System.out.println();
         System.out.println("after sort:");
         sortedList.stream().limit(100).forEach(System.out::println);
     }
@@ -90,12 +88,10 @@ public class FifthTopic {
         private byte[] storeByteArray = null;
         private int indexBounds;
         private int size;
-
         public ByteStore(byte[] storeByteArray) {
             this.storeByteArray = storeByteArray;
             indexBounds = storeByteArray.length / 3 - 1;
         }
-
         public boolean putMyItem(int index, MyItem item) {
             if (checkIndex(index) && item != null) {
                 int byteIndex=index * 3;
@@ -107,8 +103,6 @@ public class FifthTopic {
             }
             return false;
         }
-
-
         public MyItem getMyItem(int index) {
             if (checkIndex(index)) {
                 int byteIndex=index * 3;
@@ -116,15 +110,12 @@ public class FifthTopic {
             }
             return null;
         }
-
         private boolean checkIndex(int index) {
             return index <= indexBounds;
         }
-
         public byte[] getStoreByteArray() {
             return storeByteArray;
         }
-
         public int getSize() {
             return size;
         }
@@ -137,40 +128,31 @@ class MyItem {
     private byte type;
     private byte color;
     private byte price;
-
     public byte getType() {
         return type;
     }
-
     public void setType(byte type) {
         this.type = type;
     }
-
     public byte getColor() {
         return color;
     }
-
     public void setColor(byte color) {
         this.color = color;
     }
-
     public byte getPrice() {
         return price;
     }
-
     public void setPrice(byte price) {
         this.price = price;
     }
-
     public MyItem() {
     }
-
     public MyItem(byte type, byte color, byte price) {
         this.type = type;
         this.color = color;
         this.price = price;
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -183,7 +165,6 @@ class MyItem {
         return price == myItem.price;
 
     }
-
     @Override
     public int hashCode() {
         int result = (int) type;
@@ -191,7 +172,6 @@ class MyItem {
         result = 31 * result + (int) price;
         return result;
     }
-
     @Override
     public String toString() {
         return "MyItem{" +

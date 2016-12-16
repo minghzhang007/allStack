@@ -10,7 +10,6 @@ import java.util.List;
  * Created by zhangminghua on 2016/12/3.
  */
 public class SalaryFactory {
-
     public static List<Salary> generateSalarys(int salaryCount) {
         List<Salary> retList = new LinkedList<Salary>();
         for (int i = 0; i <= salaryCount; i++) {

@@ -25,21 +25,14 @@ public class SeventhTopic {
         salaryList.toArray(salaries);
         Salary[] newSalarys = Arrays.copyOf(salaries, salaries.length);
         bubbleSortSalary(salaries);
-        for (int i = 0; i < 10; i++) {
-            Salary salary = salaries[i];
-            int totalSalary = (salary.getBaseSalary() * 13 + salary.getBonus()) / 10000;
-            System.out.println(salary.getName() + ":" + totalSalary + "万");
-        }
-        System.out.println();
-        System.out.println();
-        System.out.println();
+        Arrays.asList(salaries).stream().limit(100).forEach(s -> {
+            System.out.println(s.getName()+":"+getTotalSalary(s)/10000+"万");
+        });
+        System.out.println("+++++++++");
         quickSort(newSalarys);
-        for (int i = 0; i < 10; i++) {
-            Salary salary = newSalarys[i];
-            int totalSalary = (salary.getBaseSalary() * 13 + salary.getBonus()) / 10000;
-            System.out.println(salary.getName() + ":" + totalSalary + "万");
-        }
-
+        Arrays.asList(newSalarys).stream().limit(100).forEach(s ->{
+            System.out.println(s.getName()+":"+getTotalSalary(s)/10000+"万");
+        });
     }
 
     public static void bubbleSortSalary(Salary[] salaries) {
@@ -87,7 +80,6 @@ public class SeventhTopic {
                 salaries[i] = salaries[j];
                 i++;
             }
-
             //从左往右找 比totalSalaryX 小的
             while (i < j && getTotalSalary(salaries[i]) >= totalSalaryX) {
                 i++;
@@ -96,10 +88,8 @@ public class SeventhTopic {
                 salaries[j] = salaries[i];
                 j--;
             }
-
         }
         salaries[i] = salary;
         return i;
     }
-
 }

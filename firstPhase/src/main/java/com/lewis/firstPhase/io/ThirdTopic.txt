@@ -1,0 +1,4 @@
+整理全套的Java IO类图并用PPT讲解说明
+InputStream:是所有字节输入流的基类
+read() :读取流的下一个字节，返回的byte转为一个int返回
+read(byte[] dst):从流中读取一些字节，把这些字节存储到字节数组dst中

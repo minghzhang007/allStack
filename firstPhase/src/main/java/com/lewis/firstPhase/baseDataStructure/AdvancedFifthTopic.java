@@ -31,25 +31,19 @@ public class AdvancedFifthTopic {
         }
 
         System.out.println();
-        System.out.println();
         List<MyItem> getList = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
             getList.add(byteStore.getMyItem(i));
         }
         getList.stream().forEach(System.out::println);
-        int[] storeByteArray = byteStore.getStoreByteArray();
-
-
     }
 
 
     private class ByteStore {
         private int[] storeByteArray;
-
         public ByteStore(int[] storeByteArray) {
             this.storeByteArray = storeByteArray;
         }
-
         public boolean putMyItem(int index, MyItem item) {
             byte[] bytes = new byte[4];
             bytes[0] = item.getType();
@@ -59,7 +53,6 @@ public class AdvancedFifthTopic {
             setValue(index,intValue);
             return true;
         }
-
         public MyItem getMyItem(int index) {
             if (checkIndexForPass(index)) {
                 int intValue = storeByteArray[index];
@@ -72,7 +65,6 @@ public class AdvancedFifthTopic {
             }
             return null;
         }
-
         public boolean setValue(int index, int value) {
             if (checkIndexForPass(index)) {
                 storeByteArray[index] = value;
@@ -80,17 +72,12 @@ public class AdvancedFifthTopic {
             }
             return false;
         }
-
-
-
         private boolean checkIndexForPass(int index) {
             return index >= 0 && index <= storeByteArray.length - 1;
         }
-
         public int[] getStoreByteArray() {
             return storeByteArray;
         }
-
         public void setStoreByteArray(int[] storeByteArray) {
             this.storeByteArray = storeByteArray;
         }
