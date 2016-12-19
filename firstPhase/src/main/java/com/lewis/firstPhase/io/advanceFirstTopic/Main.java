@@ -32,17 +32,5 @@ public class Main {
         DecodeDecorator decodeDecorator = new DecodeDecorator(decorator1);
         String display4 = decodeDecorator.display("顶级机密：1941年12月 日本偷袭珍珠港！ 银行密码是:1234ADC");
         System.out.println(display4);
-
-        try {
-            //这里FileInputStream 相当于组件对象，BufferedInputStream这个装饰器装饰了FileInputStream对象
-            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(new File("fileName")));
-            byte[] buff = new byte[1024];
-            bis.read(buff);
-            System.out.println(new String(buff));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

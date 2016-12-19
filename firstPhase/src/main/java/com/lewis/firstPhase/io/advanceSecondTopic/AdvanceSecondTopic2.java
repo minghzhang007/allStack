@@ -62,7 +62,7 @@ public class AdvanceSecondTopic2 {
             RandomAccessFile raf = new RandomAccessFile(fileName, "r");
             FileChannel channel = raf.getChannel();
             MappedByteBuffer byteBuffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
-            while (byteBuffer.position() < byteBuffer.limit()) {
+           /* while (byteBuffer.position() < byteBuffer.limit()) {
                 byte[] nameBytes = new byte[5];
                 byteBuffer.get(nameBytes);
                 int baseSalary = byteBuffer.getInt();
@@ -75,7 +75,7 @@ public class AdvanceSecondTopic2 {
                 totalSalaryArray[index] += totalSalary;
                 count[index] += 1;
                 namePreArray[index] = namePreBytes;
-            }
+            }*/
             /*List<Record> list = new ArrayList<>(4096);
             for (int i = 0; i < totalSalaryArray.length; i++) {
                 list.add(new Record(totalSalaryArray[i],count[i],new String(namePreArray[i])));

@@ -1,0 +1,1 @@
+9 LinkedHashMap使用什么来保存数据，其效率与HashMap相比如何？它又有什么独特特性

@@ -2,6 +2,7 @@ package com.lewis.firstPhase.io.advanceFirstTopic;
 
 /**
  * Created by zhangminghua on 2016/12/7.
+ * 具体的组件对象
  */
 public class DetailCompoment implements ICompoment {
     @Override

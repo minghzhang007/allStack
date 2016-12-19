@@ -1,0 +1,12 @@
+10 IdentityHashMap 里面如果按照下面的方法放入对象，分别是什么结果，请解释原因
+        Integer a=5;
+        Integer b=5;
+        map.put(a,"100");
+        map.put(b,"100";
+        System.out.println(map.size);
+        map.clear();
+       Integer a=Integer.MAX_VALUE-1;
+       Integer b=Integer.MAX_VALUE-1;
+       map.put(a,"100");
+        map.put(b,"100";
+        System.out.println(map.size);

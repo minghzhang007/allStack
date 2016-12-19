@@ -19,13 +19,10 @@ import java.util.stream.Collectors;
 public class FourthTopic {
     public static void main(String[] args) {
         File file = new File("D:\\allStack\\salarys.txt");
-        List<Salary> salaryList = readSalariesFromFile(file);
         long beginTime = System.currentTimeMillis();
+        List<Salary> salaryList = readSalariesFromFile(file);
         basicFunction(salaryList);
-        //generateSalaryFile(file,10000000);
-        //readSalariesFromFile(file);
         System.out.println("costTime is #"+(System.currentTimeMillis()-beginTime));
-
     }
 
     public static void basicFunction(List<Salary> salaryList){
@@ -64,11 +61,6 @@ public class FourthTopic {
             Integer count = name2CountMap.get(key);
             System.out.println(key+","+value/10000+"万"+","+count+"个人");
         });
-       /* AtomicInteger totalCount =new AtomicInteger(0);
-        list.stream().forEach( (Map.Entry<String, Long> e) ->{
-            totalCount.getAndAdd(name2CountMap.get(e.getKey()));
-        });
-        System.out.println(totalCount.get());*/
     }
 
     public static int getSalary(Salary salary){
@@ -86,19 +78,21 @@ public class FourthTopic {
                 }
                 String[] ss = readLine.split(",");
                 if (ss != null && ss.length == 3) {
-                    Salary salary = new Salary();
-                    salary.setName(ss[0]);
-                    salary.setBaseSalary(Integer.parseInt(ss[1]));
-                    salary.setBonus(Integer.parseInt(ss[2]));
+                    Salary salary = createSalary(ss);
                     salaryList.add(salary);
                 }
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return salaryList;
+    }
+    private static Salary createSalary(String[] ss) {
+        Salary salary = new Salary();
+        salary.setName(ss[0]);
+        salary.setBaseSalary(Integer.parseInt(ss[1]));
+        salary.setBonus(Integer.parseInt(ss[2]));
+        return salary;
     }
 
     private static void generateSalaryFile(File file,int count) {
@@ -117,6 +111,7 @@ public class FourthTopic {
                 batchIndex ++;
                 if (batchIndex == batchSize) {
                     bw.flush();
+                    batchIndex=0;
                 }
             }
         } catch (IOException e) {

@@ -6,12 +6,12 @@ package com.lewis.sort;
 public class BinaryUtil {
 
     /**
-     * 将一个int拆成4个byte组成的数组
-     * 【第一个byte 高8位】
-     * 【第二个byte 次高8位】
-     * 【第三个byte 次低8位】
-     * 【第四个byte 低8位】
-     *
+     * 按照big-endian的字节顺序，将一个int拆成4个byte组成的数组
+     * 数组的地址，是数组中第一个元素的地址，即地址低位的
+     * 【第一个byte[地址最低位] 高8位字节】
+     * 【第二个byte[地址次低位] 次高8位字节】
+     * 【第三个byte[地址次高位] 次低8位字节】
+     * 【第四个byte[地址最高位] 低8位字节】
      * @return 4个byte组成的数组
      */
     public static byte[] int2ByteArray(int i) {
@@ -28,10 +28,13 @@ public class BinaryUtil {
     }
 
     /**
-     * 将byte数组的byte按照从高位到低位的次序排练，行程一个int
-     *
-     * @param bytes
-     * @return
+     * 将byte数组按照big endian的方式转化为一个int
+     * 数组的地址，是数组中第一个元素的地址，即地址低位的
+     * 【第一个byte[地址最低位] 高8位字节】
+     * 【第二个byte[地址次低位] 次高8位字节】
+     * 【第三个byte[地址次高位] 次低8位字节】
+     * 【第四个byte[地址最高位] 低8位字节】
+     * @return 4个byte组成的数组
      */
     public static int byteArray2Int(byte[] bytes) {
         int retInt = 0;

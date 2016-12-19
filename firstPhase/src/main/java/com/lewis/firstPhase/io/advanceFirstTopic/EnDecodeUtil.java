@@ -2,6 +2,7 @@ package com.lewis.firstPhase.io.advanceFirstTopic;
 
 /**
  * Created by zhangminghua on 2016/12/7.
+ * 加密工具类：基于异或运算的简单加密、解密
  */
 public class EnDecodeUtil {
 

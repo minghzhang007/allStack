@@ -1,0 +1,1 @@
+4 LinkedList也是一种Queue么？是否是双向链表?
