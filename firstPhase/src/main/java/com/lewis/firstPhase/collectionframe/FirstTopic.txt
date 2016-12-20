@@ -2,9 +2,15 @@
 Collection:集合框架的顶层接口，定义了集合操作的基础API。
 Collection下有三个直接子接口：List,Set,Queue
 List:有序、可重复的集合接口，这里的有序指的是按照元素插入的顺序
-Set:无序、不可重复的集合接口
+Set:无序、不可重复的集合接口，这里的无序指的是不按照元素出入的顺序。
    Set下面有SortedSet接口：有序的(默认升序)、不可重复的集合接口.
    里面的元素要么实现了Comparable接口(natural sorting order)，要么集合接收一个Comparator比较器对象,否则抛出ClassCastException。
-   SortedSet接口下面有NavigableSet接口
-Queue:  Queue接口下面有BlockingQueue接口、Deque接口，Blocking接口下面有BlockingDeque接口和TransferQueue接口
+   SortedSet接口下面有NavigableSet接口，实现一些导航的方法，如descendingSet()方法 返回降序的集合的视图,descendingIterator()方法
+Queue:队列，有序的，先进先出FIFO队列，
+Queue接口下面有BlockingQueue接口、Deque接口，BlockingQueue接口下面有BlockingDeque接口和TransferQueue接口
         Deque接口下面有BlockingDeque接口
+BlockingQueue:线程安全的队列，实现了生产者-消费者模型；当队列满了，往队列中插入元素的操作会阻塞，直到队列中有可用的空间存放待插入的元素。
+当队列为空（没有元素）时，从队列中获取元素的操作会阻塞，直到队列中有元素时阻塞消失。
+Deque:double ended queue双端队列，在队列头部、尾部均可以插入元素和删除元素。
+BlockingDeque:支持阻塞操作的双端队列
+TransferQueue:since jdk1.7 线程之间传递数据的BlockingQueue,生成者用transfer(E e)方法传递数据， 若没有消费者消费数据，则生产者线程阻塞。

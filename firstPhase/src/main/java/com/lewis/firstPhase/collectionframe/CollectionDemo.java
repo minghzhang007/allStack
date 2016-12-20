@@ -1,6 +1,8 @@
 package com.lewis.firstPhase.collectionframe;
 
 import java.util.*;
+import java.util.concurrent.LinkedTransferQueue;
+import java.util.concurrent.TransferQueue;
 
 /**
  * Created by zhangminghua on 2016/12/19.
@@ -10,7 +12,8 @@ public class CollectionDemo {
     public static void main(String[] args) {
        /* testSet();
         testSortedSet();*/
-        testNavigableSet();
+        //testNavigableSet();
+        testTransferQueue();
     }
 
     public static void testSet(){
@@ -56,5 +59,33 @@ public class CollectionDemo {
             System.out.print(next+" ");
         }
         System.out.println();
+    }
+
+    public static void testTransferQueue() {
+        TransferQueue<String> queue = new LinkedTransferQueue<>();
+        /*for (int i = 0; i < 10; i++) {
+            queue.add("name_"+i);
+        }*/
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    while (true) {
+                        queue.take();
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        ).start();
+        try {
+            System.out.println("wating to tranfer element");
+            queue.transfer("name_5");
+            System.out.println("transfered element");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 }
