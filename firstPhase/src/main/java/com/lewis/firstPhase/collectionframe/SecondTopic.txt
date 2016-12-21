@@ -1,1 +1,6 @@
 2 TreeSet继承了什么Set，与HashSet的区别是？HashSet与HashTable是“一脉相承”的么？
+TreeSet继承了AbstractSet,实现了NavigableSet接口、Cloneable接口
+TreeSet是一个有序的集合，HashSet则是无序的
+HashSet是使用HashMap来实现的
+HashTable是线程安全的HashMap,很多的操作方法使用synchronized关键字进行同步，效率很差,在高并发情况下可使用ConcurrentHashMap代替HashTable
+HashTable中key和value均不能为Null,HashMap中key和null均可以为Null

@@ -1,1 +1,16 @@
 5 Java数组如何与Collection相互转换
+使用Arrays.asList(E ...)方法，将java数组转化为List,但此List是Arrays里面的内部类ArrayList,不能进行新增元素和删除元素，这个要注意。
+Collection接口中有两个方法将集合转为数组：
+1.Object[] toArray();    此方法返回的元素类型为Object,如果元素有泛型的话，可以使用下面的方法
+2.<T> T[] toArray(T[] a);将集合中的元素放到给定的数组a中，支持泛型；
+若给定的数组a的大小 小于集合中元素的数量，则新创建一个数组填充元素后返回。
+
+public <T> T[] toArray(T[] a) {
+        if (a.length < size)
+            // Make a new array of a's runtime type, but my contents:
+            return (T[]) Arrays.copyOf(elementData, size, a.getClass());
+        System.arraycopy(elementData, 0, a, 0, size);
+        if (a.length > size)
+            a[size] = null;
+        return a;
+}

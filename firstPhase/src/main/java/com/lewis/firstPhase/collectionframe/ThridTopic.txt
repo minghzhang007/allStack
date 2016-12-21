@@ -1,1 +1,24 @@
 3 Queue接口增加了哪些方法，这些方法的作用和区别是？
+Queue是Collection的子接口，除了基本的通用集合操作之外，新增了额外的插入、提取、检查的操作。
+Queue的方法可以分为两种形式：
+1.若某项操作失败，则抛出异常
+2.若某项操作失败，则返回特定的值，比如null或者false,该种形式用在队列容量受限的插入操作中。
+新增的方法有：
+
+     在队列容量充足的时候，将指定元素插入队列中，返回true;若队列中没有空间，则抛出IllegalStateException
+    boolean add(E e);
+
+     在队列容量充足的时候，将指定元素插入队列中，返回true;若队列中没有空间，返回false
+    boolean offer(E e);
+
+     从队列的头部移除一个元素，若此时队列为空，则抛出NoSuchElementException
+    E remove();
+
+     从队列的头部移除一个元素，若此时队列为空，则返回null
+    E poll();
+
+    获取队列的头部元素，但是并不删除；若此时队列为空，则抛出NoSuchElementException
+    E element();
+
+      获取队列的头部元素，但是并不删除；若此时队列为空，则返回null
+    E peek();

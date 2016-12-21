@@ -1,6 +1,7 @@
 package com.lewis.firstPhase.collectionframe;
 
 import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.LinkedTransferQueue;
 import java.util.concurrent.TransferQueue;
 
@@ -13,7 +14,80 @@ public class CollectionDemo {
        /* testSet();
         testSortedSet();*/
         //testNavigableSet();
-        testTransferQueue();
+        //testTransferQueue();
+        //testQueue();
+       // testLinkedList();
+        //testArray2Collection();
+        testHashMap();
+    }
+
+    public static void testHashMap(){
+        Person person1 = new Person(1,"name1","singsing");
+        Person person2 = new Person(1,"name1","singsing");
+        Person person3 = new Person(1,"name1","singsing");
+        Person person4 = new Person(1,"name1","singsing");
+        HashMap<Person,Integer> map = new HashMap<>();
+        map.put(person1,1);
+        map.put(person2,2);
+        map.put(person3,3);
+        map.put(person4,4);
+        System.out.println(map.toString());
+        HashSet<Person> set = new HashSet<>();
+        set.add(person1);
+        set.add(person2);
+        set.add(person3);
+        set.add(person4);
+        System.out.println(set.toString());
+        System.out.println(person1.hashCode());
+        System.out.println(person2.hashCode());
+        System.out.println(person3.hashCode());
+        System.out.println(person4.hashCode());
+    }
+
+    public static void testArray2Collection(){
+        String[] array = new String[10];
+        for (int i = 0; i < 10; i++) {
+            array[i]="name_"+i;
+        }
+        List<String> strings = Arrays.asList(array);
+        System.out.println(strings);
+        strings.remove(0);
+        //strings.add("name_11");
+        System.out.println(strings);
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            list.add(i);
+        }
+        System.out.println(list);
+        list.toArray();
+    }
+
+    private static void testQueue() {
+        Queue<Integer> queue = new ArrayBlockingQueue<Integer>(10);
+        for (int i = 0; i < 20; i++) {
+            //queue.add(i);
+            boolean offer = queue.offer(i);
+            System.out.println(offer);
+        }
+        System.out.println();
+        System.out.println();
+        for (int i = 0; i < 20; i++) {
+            //Integer remove = queue.remove();
+            Integer poll = queue.poll();
+            System.out.println(poll);
+        }
+        queue.add(1);
+        Integer element = queue.element();
+        System.out.println(element);
+        System.out.println("size:"+queue.size());
+    }
+
+    public static void testLinkedList(){
+        LinkedList<String> list = new LinkedList<>();
+        for (int i = 0; i < 10; i++) {
+            list.add("name_"+i);
+        }
+        System.out.println(list.toString());
     }
 
     public static void testSet(){

@@ -1,1 +1,4 @@
 4 LinkedList也是一种Queue么？是否是双向链表?
+LinkedList实现了List接口和Deque接口。
+Deque接口扩展自接口Queue,因此LinkedList是一种Queue，一种特殊的Queue,即是一种在队列的头部和尾部均能插入和删除的队列。
+是双向链表

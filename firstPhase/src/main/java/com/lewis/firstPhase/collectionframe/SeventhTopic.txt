@@ -1,1 +1,8 @@
 7 HashSet 与HashMap中放入的自定义对象必须要实现哪些方法，说明原因
+自定义的对象必须实现hashCode()方法和equals(E e)方法。
+HashSet是使用HashMap来实现的，我们先说HashMap
+在jdk1.6的实现中，
+首先根据key的hashCode()方法获取hash值，再用hash(int h)方法返回最终的hash值，
+再使用hash & (length-1)确定该key落到哪个数组下标i上，因为数组的第i个元素有可能是个链表，所以要
+遍历数组的第i个元素开始的链表上的元素，确定key是否链表上的元素一致，使用equals(E e)方法进行比较
+

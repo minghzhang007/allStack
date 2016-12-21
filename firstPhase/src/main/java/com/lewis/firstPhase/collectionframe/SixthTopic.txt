@@ -1,1 +1,6 @@
 6 Map的一级子接口有哪些种类，分别用作什么目的？
+Map下面的一级子接口有：ConcurrentMap接口和SortedMap接口
+ConcurrentMap接口：线程安全的Map接口的规约，定义了一些原子性的符合操作。
+SortedMap接口：有序的Map接口，按照key的natural ordering 或者提供的Comparator来排序
+NavigableMap接口扩展了SortedMap接口，提供了导航的相关方法
+ConcurrentNavigableMap接口扩展了ConcurrentMap接口和NavigableMap接口，即线程安全的带有按照key排序的、导航功能的Map
