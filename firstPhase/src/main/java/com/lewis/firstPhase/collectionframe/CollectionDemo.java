@@ -18,7 +18,17 @@ public class CollectionDemo {
         //testQueue();
        // testLinkedList();
         //testArray2Collection();
-        testHashMap();
+        //testHashMap();
+        testTreeSet();
+    }
+
+    public static void testTreeSet(){
+        TreeSet<Person> set = new TreeSet<>();
+        Person person1 = new Person(1,"name1","singsing");
+        Person person2 = new Person(1,"name1","singsing");
+        set.add(person1);
+        set.add(person2);
+        System.out.println(set.toString());
     }
 
     public static void testHashMap(){
@@ -122,7 +132,7 @@ public class CollectionDemo {
         NavigableSet<Integer> set = new TreeSet<>();
         Random r = new Random();
         for (int i = 0; i < 10; i++) {
-            set.add(r.nextInt(200));
+            set.add(i);
         }
         System.out.println("set:"+set.toString());
         NavigableSet<Integer> descendingSet = set.descendingSet();
@@ -133,6 +143,16 @@ public class CollectionDemo {
             System.out.print(next+" ");
         }
         System.out.println();
+        SortedSet<Integer> headset = set.headSet(5);
+        System.out.println(headset);
+        Integer higher = set.higher(4);
+        System.out.println("higher:"+higher);
+        Integer lower = set.lower(4);
+        System.out.println("lower:"+lower);
+        Integer floor = set.floor(4);
+        System.out.println("floor:"+floor);
+        Integer ceiling = set.ceiling(4);
+        System.out.println("ceiling:"+ceiling);
     }
 
     public static void testTransferQueue() {

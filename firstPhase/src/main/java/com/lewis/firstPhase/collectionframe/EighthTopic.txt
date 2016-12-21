@@ -1,1 +1,6 @@
 8 TreeSet里的自定义对象必须要实现什么方法，说明原因
+必须实现java.lang.Comparable接口
+TreeSet是用TreeMap来实现的，它是按照一定顺序存放的，这个排序的依据就是所存放元素的compareTo方法，放第一个的时候无需跟任何元素比较，
+但是从第二个开始就要比较以决定放置的位置了，这时候就要调用compareTo方法，怎么调用compareTo方法呢，
+只有将类强制转换为Comparable类型之后才能调用啊，但是若你没有实现Comparable接口，
+那当然就不能强制准换了，所以就报java.lang.ClassCastException

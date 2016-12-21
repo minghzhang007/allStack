@@ -3,7 +3,7 @@ package com.lewis.firstPhase.collectionframe;
 /**
  * Created by zhangminghua on 2016/12/21.
  */
-public class Person {
+public class Person implements Comparable<Person>{
     private int id;
     private String name;
     private String hobby;
@@ -66,5 +66,10 @@ public class Person {
                 ", name='" + name + '\'' +
                 ", hobby='" + hobby + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Person o) {
+        return Integer.compare(o.getId(),this.getId());
     }
 }
