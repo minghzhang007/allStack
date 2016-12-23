@@ -38,7 +38,7 @@ public class Person {
         this.hobby = hobby;
     }
 
-   /* @Override
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Person)) return false;
@@ -57,7 +57,7 @@ public class Person {
         result = 31 * result + name.hashCode();
         result = 31 * result + (hobby != null ? hobby.hashCode() : 0);
         return result;
-    }*/
+    }
 
     @Override
     public String toString() {

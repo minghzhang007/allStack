@@ -1,1 +1,6 @@
 9 LinkedHashMap使用什么来保存数据，其效率与HashMap相比如何？它又有什么独特特性
+HashMap迭代元素时，不保证元素的迭代顺序和元素的插入顺序一致
+LinkedHashMap可以按照插入顺序或者访问顺序来进行迭代。
+并新增了对前一个元素和后一个元素的引用，构成双向链表
+从技术上来说，不同的是它定义了一个 Entry<K,V> header，这个 header 不是放在 Table 里，它是额外独立出来的。
+LinkedHashMap 通过继承 hashMap 中的 Entry<K,V>,并添加两个属性 Entry<K,V> before,after,和 header 结合起来组成一个双向链表，来实现按插入顺序或访问顺序排序。

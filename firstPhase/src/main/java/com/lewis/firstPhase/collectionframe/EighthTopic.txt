@@ -1,1 +1,8 @@
 8 TreeSet里的自定义对象必须要实现什么方法，说明原因
+TreeSet里面的元素要实现接口java.lang.Comparable。
+TreeSet是可排序的集合，要么待插入的元素对象实现java.lang.Comparable
+接口，要么在创建TreeSet对象时，传入一个Comparator对象来进行比较。
+TreeSet是由TreeMap实现的,调用add(E e)方法将元素添加到TreeSet时，会调用TreeMap的put(E,Object)方法，会将
+元素E强制转换为Comparable，以进行比较。若待插入的元素对象，没有实现Comparable接口，同时在创建TreeSet集合时，
+也没有提供Comparator比较器对象，则抛出ClassCastException；若待插入的元素对象实现了Comparable接口，同时在
+创建TreeSet集合时也提供了Comparator比较器对象，则会用Comparator比较器对象进行插入元素之间的比较。

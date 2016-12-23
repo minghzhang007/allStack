@@ -10,3 +10,12 @@
        map.put(a,"100");
         map.put(b,"100";
         System.out.println(map.size);
+
+结果为
+1
+2
+IdentityHashMap和HashMap存储数据时，采用的key的比较策略不同；
+在插入数据时，HashMap采用的是equals(E e),若是equals(E e)为true时，则替换原有的key所对应的value值；
+IdentityHashMap,采用的是==操作符，只有是同一个对象引用的时候，才会认为是相等的。
+上面的程序中，Integer默认会缓存-128到127的整数，所以Integer a =5;Integer b=5;这里a和b,是同一个对象 a==b 为true,所以只会被插入一次，size为1.
+而Integer.MAX_VALUE-1不在Integer的默认缓存范围内，此时的a和b,虽然数值相等，但是不是同一个对象 a ==b 为false，因此会分别插入IdentityHashMap中，size为2.
