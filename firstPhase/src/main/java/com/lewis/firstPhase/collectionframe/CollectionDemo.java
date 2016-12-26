@@ -18,17 +18,61 @@ public class CollectionDemo {
         //testQueue();
        // testLinkedList();
         //testArray2Collection();
-        //testHashMap();
-        testTreeSet();
+       // testHashMap();
+       // testTreeSet();
+       // testLinkedHashMap();
+        testIdentityHashMap();
+    }
+
+    public static void testIdentityHashMap(){
+        Map<Integer,String> map = new IdentityHashMap<>();
+        Integer a=5;
+        Integer b=5;
+        map.put(a,"100");
+        map.put(b,"100");
+        System.out.println(map.size());
+        map.clear();
+        Integer c=Integer.MAX_VALUE-1;
+        Integer d=Integer.MAX_VALUE-1;
+        map.put(c,"100");
+        map.put(d,"100");
+        System.out.println(map.size());
+   /*     Map<Person,Integer> integerMap= new IdentityHashMap<>();
+        Person person1 = new Person(1,"name1","singsing");
+        Person person2 = new Person(1,"name1","singsing");
+        integerMap.put(person1,1);
+        integerMap.put(person2,1);
+        System.out.println(integerMap);*/
+    }
+
+
+    public static void testLinkedHashMap(){
+        Map<String,Integer> linkedHashMap = new LinkedHashMap<>(16,0.75f,true);
+        for (int i = 0; i < 10; i++) {
+            linkedHashMap.put("name_"+i,i);
+        }
+        System.out.println(linkedHashMap);
+        linkedHashMap.get("name_5");
+        linkedHashMap.get("name_6");
+        System.out.println(linkedHashMap);
     }
 
     public static void testTreeSet(){
-        TreeSet<Person> set = new TreeSet<>();
+        TreeSet<Person> set = new TreeSet<>(new Comparator<Person>() {
+            @Override
+            public int compare(Person o1, Person o2) {
+                return Integer.compare(o2.getId(),o1.getId());
+            }
+        });
         Person person1 = new Person(1,"name1","singsing");
-        Person person2 = new Person(1,"name1","singsing");
+        Person person2 = new Person(2,"name2","singsing");
+        Person person3 = new Person(3,"name3","singsing");
+        Person person4 = new Person(4,"name4","singsing");
         set.add(person1);
         set.add(person2);
-        System.out.println(set.toString());
+        set.add(person3);
+        set.add(person4);
+        System.out.println(set);
     }
 
     public static void testHashMap(){
@@ -49,9 +93,12 @@ public class CollectionDemo {
         set.add(person4);
         System.out.println(set.toString());
         System.out.println(person1.hashCode());
+        System.out.println(person1.hashCode());
+        System.out.println(person1.hashCode());
         System.out.println(person2.hashCode());
         System.out.println(person3.hashCode());
         System.out.println(person4.hashCode());
+        System.out.println(person1.equals(person2));
     }
 
     public static void testArray2Collection(){
@@ -132,7 +179,7 @@ public class CollectionDemo {
         NavigableSet<Integer> set = new TreeSet<>();
         Random r = new Random();
         for (int i = 0; i < 10; i++) {
-            set.add(i);
+            set.add(r.nextInt(200));
         }
         System.out.println("set:"+set.toString());
         NavigableSet<Integer> descendingSet = set.descendingSet();
@@ -143,16 +190,6 @@ public class CollectionDemo {
             System.out.print(next+" ");
         }
         System.out.println();
-        SortedSet<Integer> headset = set.headSet(5);
-        System.out.println(headset);
-        Integer higher = set.higher(4);
-        System.out.println("higher:"+higher);
-        Integer lower = set.lower(4);
-        System.out.println("lower:"+lower);
-        Integer floor = set.floor(4);
-        System.out.println("floor:"+floor);
-        Integer ceiling = set.ceiling(4);
-        System.out.println("ceiling:"+ceiling);
     }
 
     public static void testTransferQueue() {
