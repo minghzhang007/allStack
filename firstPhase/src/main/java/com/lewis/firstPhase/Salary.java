@@ -35,6 +35,15 @@ public class Salary {
         this.bonus = bonus;
     }
 
+    public Salary(String name, int baseSalary, int bonus) {
+        this.name = name;
+        this.baseSalary = baseSalary;
+        this.bonus = bonus;
+    }
+
+    public Salary() {
+    }
+
     @Override
     public String toString() {
         return "Salary{" +
