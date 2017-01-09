@@ -18,10 +18,29 @@ public class CollectionDemo {
         //testQueue();
        // testLinkedList();
         //testArray2Collection();
-       // testHashMap();
+      testHashMap();
        // testTreeSet();
        // testLinkedHashMap();
-        testIdentityHashMap();
+      //  testIdentityHashMap();
+       // testIterator();
+       // testHashSet();
+    }
+
+    public static void testHashSet() {
+        Person person = new Person(100, "lewis", "sing");
+        HashSet<Person> set1 = new HashSet<>();
+        set1.add(person);
+
+        HashSet<Person> set2 = new HashSet<>(set1);
+        System.out.println(set2.containsAll(set1));
+        Iterator<Person> iterator = set2.iterator();
+        while (iterator.hasNext()) {
+            Person p = iterator.next();
+            p.setId(101);
+        }
+        System.out.println(set1.toString());
+        System.out.println(set2.toString());
+        System.out.println(set2.containsAll(set1));
     }
 
     public static void testIdentityHashMap(){
@@ -43,6 +62,17 @@ public class CollectionDemo {
         integerMap.put(person1,1);
         integerMap.put(person2,1);
         System.out.println(integerMap);*/
+    }
+
+    public static void testIterator(){
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            list.add(i);
+            if (i == 5) {
+                list.remove(3);
+            }
+        }
+        System.out.println(list);
     }
 
 
@@ -77,28 +107,12 @@ public class CollectionDemo {
 
     public static void testHashMap(){
         Person person1 = new Person(1,"name1","singsing");
-        Person person2 = new Person(1,"name1","singsing");
-        Person person3 = new Person(1,"name1","singsing");
-        Person person4 = new Person(1,"name1","singsing");
         HashMap<Person,Integer> map = new HashMap<>();
         map.put(person1,1);
-        map.put(person2,2);
-        map.put(person3,3);
-        map.put(person4,4);
-        System.out.println(map.toString());
-        HashSet<Person> set = new HashSet<>();
-        set.add(person1);
-        set.add(person2);
-        set.add(person3);
-        set.add(person4);
-        System.out.println(set.toString());
-        System.out.println(person1.hashCode());
-        System.out.println(person1.hashCode());
-        System.out.println(person1.hashCode());
-        System.out.println(person2.hashCode());
-        System.out.println(person3.hashCode());
-        System.out.println(person4.hashCode());
-        System.out.println(person1.equals(person2));
+
+        System.out.println(map.containsKey(person1));
+        person1.setId(2);
+        System.out.println(map.containsKey(person1));
     }
 
     public static void testArray2Collection(){
