@@ -3,6 +3,7 @@ package com.lewis.firstPhase.multiThreadUp;
 /**
  * Created by Administrator on 2016/11/21.
  * 生成者生产完数据后要通知消费者；消费者在消费完数据后要通知生产者；要加上这一点notify(),notifyAll()
+ * 多线程条件下，GuardedSuspension 保护的条件要用while，不能用if
  */
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +42,7 @@ class ConsumerThread extends Thread
         {
             synchronized(TestOnly.lock)
             {
-                if(TestOnly.datas.isEmpty())
+                while(TestOnly.datas.isEmpty())//change if  to while loop
                 {
                     System.out.println(Thread.currentThread().getName()+" into wait ,because empty ");
                     try {
@@ -80,7 +81,7 @@ class ProducerThread extends Thread
         {
             synchronized(TestOnly.lock)
             {
-                if(TestOnly.datas.size()>1)
+                while(TestOnly.datas.size()>1) //change if  to while loop
                 {
                     System.out.println(Thread.currentThread().getName()+" into wait,because full ");
                     try {
