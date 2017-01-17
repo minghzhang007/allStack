@@ -2,6 +2,7 @@ package com.lewis.firstPhase.io.advanceSecondTopic;
 
 import com.lewis.firstPhase.RandomUtil;
 import com.lewis.firstPhase.Salary;
+import com.lewis.firstPhase.multiThreadUp.RandomAccessFileUtil;
 
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -35,7 +36,7 @@ public class AdvanceSecondTopic {
 
     public static void readSalaryFile(File file) throws FileNotFoundException {
         RandomAccessFile raf = new RandomAccessFile(file, "rw");
-        List<StartEndIndexPair> startEndIndexPairs = getStartEndIndexPairs(raf);
+        List<StartEndIndexPair> startEndIndexPairs = RandomAccessFileUtil.getStartEndIndexPairs(raf,Runtime.getRuntime().availableProcessors());
         //List<Salary> salaryList = getSalariesConcurrent(file, startEndIndexPairs);
         List<Salary> salaryList = getSalariesSerial(raf, startEndIndexPairs);
         System.out.println("size:" + salaryList.size());
@@ -93,40 +94,7 @@ public class AdvanceSecondTopic {
         return salaryList;
     }
 
-    private static List<StartEndIndexPair> getStartEndIndexPairs(RandomAccessFile raf) {
-        List<StartEndIndexPair> startEndIndexPairs = new ArrayList<>();
-        try {
-            long length = raf.length();
-            int nCpu = Runtime.getRuntime().availableProcessors();
-            long lengthPerThread = length / nCpu;
-            long lastEndIndex = lengthPerThread;
-            //确定每个线程读取到startIndex和endIndex
-            for (int i = 0; i < nCpu; i++) {
-                if (i == 0) {
-                    raf.seek(lastEndIndex);
-                    while (raf.readByte() != '\n') {
-                        lastEndIndex++;
-                    }
-                    startEndIndexPairs.add(new StartEndIndexPair(0, lastEndIndex));
-                } else {
-                    long tmpStartIndex = lastEndIndex + 1;
-                    long tmpEndIndex = tmpStartIndex + lengthPerThread;
-                    if (tmpEndIndex > length) {
-                        tmpEndIndex = length - 1;
-                    }
-                    raf.seek(tmpEndIndex);
-                    while (raf.readByte() != '\n') {
-                        tmpEndIndex++;
-                    }
-                    startEndIndexPairs.add(new StartEndIndexPair(tmpStartIndex, tmpEndIndex));
-                    lastEndIndex = tmpEndIndex;
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return startEndIndexPairs;
-    }
+
 
     public static List<Salary> getSalary(RandomAccessFile raf, StartEndIndexPair startEndIndexPair) {
         long startIndex = startEndIndexPair.startIndex;
@@ -211,38 +179,4 @@ public class AdvanceSecondTopic {
         }
     }
 
-
-    private static class StartEndIndexPair {
-        long startIndex;
-        long endIndex;
-
-        public StartEndIndexPair(long startIndex, long endIndex) {
-            this.startIndex = startIndex;
-            this.endIndex = endIndex;
-        }
-
-        public long getStartIndex() {
-            return startIndex;
-        }
-
-        public void setStartIndex(long startIndex) {
-            this.startIndex = startIndex;
-        }
-
-        public long getEndIndex() {
-            return endIndex;
-        }
-
-        public void setEndIndex(long endIndex) {
-            this.endIndex = endIndex;
-        }
-
-        @Override
-        public String toString() {
-            return "StartEndIndexPair{" +
-                    "startIndex=" + startIndex +
-                    ", endIndex=" + endIndex +
-                    '}';
-        }
-    }
 }
