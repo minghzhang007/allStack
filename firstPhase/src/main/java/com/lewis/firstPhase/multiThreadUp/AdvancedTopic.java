@@ -8,8 +8,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 /**
  * Created by zhangminghua on 2017/1/17.
@@ -25,48 +24,35 @@ public class AdvancedTopic {
     private static final int coreCPUSize = Runtime.getRuntime().availableProcessors();
     private static ExecutorService executorService = Executors.newFixedThreadPool(coreCPUSize/2);
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
         long start = System.currentTimeMillis();
         String path = "D:\\allStack\\2.txt";
-        writeFile(50000000,path);
-        /*List<Salary> salaries = readFile(raf);
+        //writeFile(10000000,path);
+        List<Salary> salaries = readFile(path);
         System.out.println("size:"+salaries.size());
-        System.out.println("lineSeparator="+lineSeparator);*/
+        System.out.println("lineSeparator="+lineSeparator);
         System.out.println("costTime:" + (System.currentTimeMillis() - start));
     }
 
-    public static List<Salary> readFile(RandomAccessFile raf) throws IOException {
+    public static List<Salary> readFile(String path) throws IOException, ExecutionException, InterruptedException {
+        RandomAccessFile raf = new RandomAccessFile(path,"rw");
         List<Salary> totalSalaryList = new LinkedList<>();
-
         List<StartEndIndexPair> startEndIndexPairs = RandomAccessFileUtil.getStartEndIndexPairs(raf,  coreCPUSize *2);
+        System.out.println(startEndIndexPairs);
+        List<Future<List<Salary>>> futures = new ArrayList<>(startEndIndexPairs.size());
         for (StartEndIndexPair startEndIndexPair : startEndIndexPairs) {
-            totalSalaryList.addAll(readFile(raf,startEndIndexPair));
+            Future<List<Salary>> future = executorService.submit(new ReaderTask(raf, startEndIndexPair));
+            futures.add(future);
+        }
+        for (Future<List<Salary>> future : futures) {
+            List<Salary> salaries = future.get();
+            if (salaries != null && salaries.size() > 0) {
+                totalSalaryList.addAll(salaries);
+            }
         }
         return totalSalaryList;
     }
 
-    private static List<Salary> readFile(RandomAccessFile raf, StartEndIndexPair startEndIndexPair) throws IOException {
-        List<Salary> salaries = new LinkedList<>();
-        long startIndex = startEndIndexPair.getStartIndex();
-        long endIndex = startEndIndexPair.getEndIndex();
-        raf.seek(startIndex);
-        int size = (int) (endIndex-startIndex+1);
-        byte[] buffer = new byte[size];
-        raf.read(buffer);
-        String str = new String(buffer,charset);
-        String[] lineRecordArray = str.split(lineSeparator);
-        if (lineRecordArray != null && lineRecordArray.length > 0) {
-            for (String lineRecord : lineRecordArray) {
-                String[] array = lineRecord.split(",");
-                if (array != null && array.length == 3) {
-                    salaries.add(new Salary(array[0],Integer.parseInt(array[1]),Integer.parseInt(array[2])));
-                }else{
-                    System.out.println("errorLine: "+lineRecord);
-                }
-            }
-        }
-        return salaries;
-    }
 
     public static void writeFile(int count, String path) throws FileNotFoundException, UnsupportedEncodingException {
         int nCPU = coreCPUSize*3;
@@ -134,6 +120,39 @@ public class AdvancedTopic {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    static class ReaderTask implements Callable<List<Salary>>{
+        private final RandomAccessFile raf;
+        private final StartEndIndexPair startEndIndexPair;
+        public ReaderTask(RandomAccessFile raf, StartEndIndexPair startEndIndexPair) {
+            this.raf = raf;
+            this.startEndIndexPair = startEndIndexPair;
+        }
+
+        @Override
+        public List<Salary> call() throws Exception {
+            List<Salary> salaries = new LinkedList<>();
+            long startIndex = startEndIndexPair.getStartIndex();
+            long endIndex = startEndIndexPair.getEndIndex();
+            raf.seek(startIndex);
+            int size = (int) (endIndex-startIndex+1);
+            byte[] buffer = new byte[size];
+            raf.read(buffer);
+            String str = new String(buffer,charset);
+            String[] lineRecordArray = str.split(lineSeparator);
+            if (lineRecordArray != null && lineRecordArray.length > 0) {
+                for (String lineRecord : lineRecordArray) {
+                    String[] array = lineRecord.split(",");
+                    if (array != null && array.length == 3) {
+                        salaries.add(new Salary(array[0],Integer.parseInt(array[1]),Integer.parseInt(array[2])));
+                    }else{
+                        System.out.println("errorLine: "+lineRecord);
+                    }
+                }
+            }
+            return salaries;
         }
     }
 
