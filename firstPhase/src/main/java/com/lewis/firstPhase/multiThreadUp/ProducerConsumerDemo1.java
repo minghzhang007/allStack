@@ -46,7 +46,7 @@ public class ProducerConsumerDemo1<E> {
             items[takeIndex] = null;
             takeIndex = increase(takeIndex);
             count--;
-            notEmpty.signalAll();
+            notFull.signalAll();
             return item;
         } finally {
             lock.writeLock().unlock();

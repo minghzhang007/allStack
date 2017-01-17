@@ -1,6 +1,9 @@
 package com.lewis.firstPhase.multiThreadUp;
 
+import java.util.Arrays;
+import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -10,8 +13,9 @@ import java.util.stream.IntStream;
  */
 public class Test {
     public static void main(String[] args) {
-        ProducerConsumerDemo1<Request> pc = new ProducerConsumerDemo1(10);
+        ProducerConsumerDemo1<Request> pc = new ProducerConsumerDemo1(20);
         AtomicLong counter = new AtomicLong(1);
+        new  QueryThread("queryThread",pc).start();
         Set<Thread> threadSet = IntStream.rangeClosed(1, 10).mapToObj(x -> {
             if (x % 2 == 0) return new SendThread("sendThread-" + x, pc,counter);
             return new HandlerThread("handlerThread-" + x, pc);
@@ -40,11 +44,13 @@ public class Test {
         @Override
         public void run() {
             try {
+                Random r = new Random();
                 while (true) {
                     Request request = new Request("No." + counter.getAndIncrement());
                     pc.put(request);
                     System.out.println(Thread.currentThread().getName() + " put " + request.toString());
-                   // TimeUnit.SECONDS.sleep(50);
+                    TimeUnit.SECONDS.sleep(r.nextInt(10));
+
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -63,9 +69,41 @@ public class Test {
         @Override
         public void run() {
             try {
+                Random r = new Random();
                 while (true) {
                     Request request = pc.take();
                     System.out.println(Thread.currentThread().getName() + " handler request " + request.toString());
+                    Thread.sleep(20000);
+                    Thread.yield();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    static class QueryThread extends Thread{
+        final ProducerConsumerDemo1 pc;
+
+        public QueryThread(String name, ProducerConsumerDemo1 pc) {
+            super(name);
+            this.pc = pc;
+        }
+
+        @Override
+        public void run() {
+            try {
+                Random r = new Random();
+                while (true) {
+                    Object[] items = pc.getItems();
+                    System.out.println("======");
+                    System.out.println("======");
+                    System.out.println("======");
+                    System.out.println(Thread.currentThread().getName()+" query data: "+Arrays.toString(items));
+                    System.out.println("======");
+                    System.out.println("======");
+                    System.out.println("======");
+                    Thread.sleep(2000);
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
