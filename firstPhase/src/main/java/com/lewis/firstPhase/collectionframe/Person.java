@@ -67,4 +67,9 @@ public class Person {
                 ", hobby='" + hobby + '\'' +
                 '}';
     }
+
+    //@Override
+    public int compareTo(Person o) {
+        return Integer.compare(o.getId(),this.getId());
+    }
 }
