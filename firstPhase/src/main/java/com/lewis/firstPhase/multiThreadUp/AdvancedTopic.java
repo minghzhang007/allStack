@@ -16,18 +16,21 @@ import java.util.concurrent.*;
  * 然后读取文件，name的前两个字符相同的，其年薪累加，比如wx，100万，3个人，最后做排序和分组，输出年薪总额最高的10组：
  * wx, 200万，10人
  * lt, 180万，8人
+ *
+ * 变量长度
  */
 public class AdvancedTopic {
 
     private static final String charset = "utf-8";
     private static final  String lineSeparator = System.getProperty("line.separator");
     private static final int coreCPUSize = Runtime.getRuntime().availableProcessors();
-    private static ExecutorService executorService = Executors.newFixedThreadPool(coreCPUSize/2);
+    private static ExecutorService executorService = Executors.newFixedThreadPool(coreCPUSize);
 
     public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
         long start = System.currentTimeMillis();
         String path = "D:\\allStack\\2.txt";
-        //writeFile(10000000,path);
+        int millionNumber = 1000000;
+        writeFile(10*millionNumber,path);
         List<Salary> salaries = readFile(path);
         System.out.println("size:"+salaries.size());
         System.out.println("lineSeparator="+lineSeparator);
@@ -37,7 +40,7 @@ public class AdvancedTopic {
     public static List<Salary> readFile(String path) throws IOException, ExecutionException, InterruptedException {
         RandomAccessFile raf = new RandomAccessFile(path,"rw");
         List<Salary> totalSalaryList = new LinkedList<>();
-        List<StartEndIndexPair> startEndIndexPairs = RandomAccessFileUtil.getStartEndIndexPairs(raf,  coreCPUSize *2);
+        List<StartEndIndexPair> startEndIndexPairs = RandomAccessFileUtil.getStartEndIndexPairs(raf,  coreCPUSize *400);
         System.out.println(startEndIndexPairs);
         List<Future<List<Salary>>> futures = new ArrayList<>(startEndIndexPairs.size());
         for (StartEndIndexPair startEndIndexPair : startEndIndexPairs) {
@@ -49,6 +52,7 @@ public class AdvancedTopic {
             if (salaries != null && salaries.size() > 0) {
                 totalSalaryList.addAll(salaries);
             }
+            salaries = null;
         }
         return totalSalaryList;
     }
@@ -86,7 +90,8 @@ public class AdvancedTopic {
         contents.stream().forEach(x-> {
             executorService.submit(new WriterTask(path,x.lastIndex,x.content,finalTotalLength));
         });
-
+        contents = null;
+        sb = null;
     }
 
     private static void appendContent(StringBuilder sb) {
@@ -142,14 +147,20 @@ public class AdvancedTopic {
             raf.read(buffer);
             String str = new String(buffer,charset);
             String[] lineRecordArray = str.split(lineSeparator);
+            str = null;
             if (lineRecordArray != null && lineRecordArray.length > 0) {
                 for (String lineRecord : lineRecordArray) {
                     String[] array = lineRecord.split(",");
                     if (array != null && array.length == 3) {
-                        salaries.add(new Salary(array[0],Integer.parseInt(array[1]),Integer.parseInt(array[2])));
+                        try {
+                            salaries.add(new Salary(array[0],Integer.parseInt(array[1]),Integer.parseInt(array[2])));
+                        } catch (Exception e) {
+                            System.out.println("occur error "+e.getMessage()+", record:"+lineRecord);
+                        }
                     }else{
                         System.out.println("errorLine: "+lineRecord);
                     }
+                    lineRecord = null;
                 }
             }
             return salaries;
