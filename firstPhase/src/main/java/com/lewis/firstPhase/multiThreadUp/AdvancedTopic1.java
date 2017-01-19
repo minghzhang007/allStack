@@ -23,7 +23,7 @@ public class AdvancedTopic1 {
     public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
         long begin = System.currentTimeMillis();
         String path = "D:\\allStack\\3.txt";
-        int totatCount = 20000_000;
+        int totatCount = 10000_000;
         //writeFile(path,totatCount);
         System.out.println("write costTime:" + (System.currentTimeMillis() - begin));
         begin = System.currentTimeMillis();
@@ -97,6 +97,7 @@ public class AdvancedTopic1 {
                 megerLongMap(totalName2TotalSalary, name2TotalSalary);
                 megerIntegerMap(totalName2CountMap,name2CountMap);
             }
+            index++;
         }
         AtomicLong counter = new AtomicLong();
         Iterator<Map.Entry<String, Integer>> iterator = totalName2CountMap.entrySet().iterator();
