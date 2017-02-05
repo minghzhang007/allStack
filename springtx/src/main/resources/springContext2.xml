@@ -1,0 +1,54 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${driverClassName}"/>
+        <property name="jdbcUrl" value="${url}"/>
+        <property name="user" value="${user}"/>
+        <property name="password" value="${password}"/>
+    </bean>
+
+    <bean id="accountDao" class="com.lewis.springtx.demo2.AccountDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="accountService" class="com.lewis.springtx.demo2.AccountServiceImpl">
+        <property name="accountDao" ref="accountDao"/>
+    </bean>
+
+    <!--配置事务管理器-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!--配置业务代理-->
+    <bean id="transactionProxyFactoryBean" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <!--配置代理目标对象-->
+        <property name="target" ref="accountService"/>
+        <property name="transactionManager" ref="transactionManager"/>
+        <property name="transactionAttributes">
+            <props>
+                <!--
+                    prop格式：
+                    PROPAGATION:事务传播行为
+                    ISOLATION:事务的隔离级别
+                    readOnly: 只读事务（不能进行新增、修改、删除）
+                    -Exception:发生哪些异常要回滚事务
+                    +Exception:发生哪些异常不回滚事务 比如：+java.lang.ArithmeticException
+                -->
+                <prop key="transfer">PROPAGATION_REQUIRED,</prop>
+            </props>
+        </property>
+        <!--若配置了proxyTargetClass为true,则不论类是否有接口，都使用CGLIB来产生代理；
+        若配置proxyTargetClass为false，若类实现了某个接口，则用jdk的动态代理，若没有实现接口，则用CGLIB-->
+        <property name="proxyTargetClass" value="true"/>
+    </bean>
+
+</beans>
