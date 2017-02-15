@@ -1,0 +1,193 @@
+AbstractQueuedSynchronizer 是构建各种同步器的基石,我们在这简称为AQS（抽象队列同步器），ReentrantLock,CountDownLatch,Semaphore,
+CyclicBarrier都是根据AQS来实现的。
+
+我们本节先看看ReentrantLock是如何根据AQS来实现的：
+一般使用lock的是这样的：
+Lock lock = new ReentrantLock();
+lock.lock();
+try{
+    //doSomething
+}finally{
+    lock.unlock();
+}
+lock在处理获取锁的请求时，有公平模式和非公平模式，通过构造函数传入的boolean值来决定采取哪种模式，默认是非公平模式
+AbstractQueuedSynchronizer 是个抽象类，继承了AbstractOwnableSynchronizer,此类也是个抽象类，
+里面有个属性 Thread exclusiveOwnerThread; 表示独占锁模式(X锁)下，拥有该锁的线程，其get/set都是protected的，目的是为了子类可以重写get/set方法。
+
+总的流程：
+当有多个线程同时请求同一个锁时，第一个获取锁的线程获取锁，其余的线程依次插入到等待队列中，当第一个线程释放锁时，会通知
+等待队列的线程获取该锁，处理数据。
+
+AbstractQueuedSynchronizer内部有个静态内部类Node来实现 等待队列
+例子：有线程t1,t2,t3同时请求锁lock,假设t1先获得了锁lock,t1然后正在进行逻辑的处理。t2由于没有获取lock,则会创建一个Node,插入到tail处，t3也没有获取
+到锁lock,也创建一个Node,插入到tail处。
+
+     * <p>To enqueue into a CLH lock, you atomically splice it in as new
+     * tail. To dequeue, you just set the head field.
+     * <pre>
+     *      +------+  prev +-----+       +-----+
+     * head |      | <---- |     | <---- |     |  tail
+     *      +------+       +-----+       +-----+
+     * </pre>
+    static final class Node {
+        /** waitStatus值为1，表示该Node所属于的线程已被cancel了*/
+        static final int CANCELLED =  1;
+        /** waitStatus值为-1，表示该Node的后继Node的线程需要被唤醒unparking*/
+        static final int SIGNAL    = -1;
+        /** waitStatus值为-2,表示该Node所属线程正在等待一个条件 waiting on condition*/
+        static final int CONDITION = -2;
+        /** waitStatus值为-3，表示共享锁模式下，releaseSharded应该传播到其他的Node */
+        static final int PROPAGATE = -3;
+        /** 共享锁模式的标识 */
+        static final Node SHARED = new Node();
+        /** 独占锁模式标识*/
+        static final Node EXCLUSIVE = null;
+
+        /**
+         * 等待状态的变量：取值仅仅在下面之列：
+         * SIGNAL -1：该Node的后继节点Node被阻塞了，当当前Node节点释放锁或者取消cancel时，当前节点必须唤醒其后继节点。
+           CANCELLED 1:表示该Node由于超时或者中断被取消了，该Node的waitStatus一旦为CANCELLED状态，则不会改变其状态，也不会回到阻塞状态。
+           CONDITION -2:等待条件状态
+           PROPAGATE -3:状态需要向后传播
+           该字段被初始化为0
+         */
+        volatile int waitStatus;
+
+        /**
+        *当前节点的先驱节点 仅仅当一个节点的线程成功的获取了锁lock时，才会成为head节点，head节点不会被取消。
+        */
+        volatile Node prev;
+
+        //当前节点的后继节点
+        volatile Node next;
+
+        /**该节点所属的线程*/
+        volatile Thread thread;
+
+
+         /** *下一个等待条件的节点*/
+        Node nextWaiter;
+
+        /**判断该节点是否是共享模式*/
+        final boolean isShared() {
+            return nextWaiter == SHARED;
+        }
+
+        /** 获取前驱节点*/
+        final Node predecessor() throws NullPointerException {
+            Node p = prev;
+            if (p == null)
+                throw new NullPointerException();
+            else
+                return p;
+        }
+
+        Node() {    // Used to establish initial head or SHARED marker
+        }
+
+        Node(Thread thread, Node mode) {     // Used by addWaiter
+            this.nextWaiter = mode;
+            this.thread = thread;
+        }
+
+        Node(Thread thread, int waitStatus) { // Used by Condition
+            this.waitStatus = waitStatus;
+            this.thread = thread;
+        }
+    }
+
+
+        //等待队列的头结点head,除了初始化之外，仅仅由setHead放过能修改它。只有获取了锁的线程才能成为头结点，并且不能被cancelled.
+        private transient volatile Node head;
+
+        //等待队列的尾节点，仅仅由enq方法能修改它。始终指向队列的最后一个元素，当有线程竞争锁失败时，会将其插入到队列的尾节点。
+        private transient volatile Node tail;
+        //需要同步的表示每个线程的状态变量
+        private volatile int state;
+我们先看下非公平模式：
+
+
+ReentrantLock内部类
+
+    /**
+     * Base of synchronization control for this lock. Subclassed
+     * into fair and nonfair versions below. Uses AQS state to
+     * represent the number of holds on the lock.
+     */
+     //lock的同步控制的基类 ，继承了AQS
+    static abstract class Sync extends AbstractQueuedSynchronizer {
+       //抽象方法 ，留给子类实现
+        abstract void lock();
+
+        /**
+         * Performs non-fair tryLock.  tryAcquire is
+         * implemented in subclasses, but both need nonfair
+         * try for trylock method.
+         */
+         //
+        final boolean nonfairTryAcquire(int acquires) {
+            final Thread current = Thread.currentThread();
+            int c = getState();
+            if (c == 0) {
+                if (compareAndSetState(0, acquires)) {
+                    setExclusiveOwnerThread(current);
+                    return true;
+                }
+            }
+            else if (current == getExclusiveOwnerThread()) {
+                int nextc = c + acquires;
+                if (nextc < 0) // overflow
+                    throw new Error("Maximum lock count exceeded");
+                setState(nextc);
+                return true;
+            }
+            return false;
+        }
+
+        protected final boolean tryRelease(int releases) {
+            int c = getState() - releases;
+            if (Thread.currentThread() != getExclusiveOwnerThread())
+                throw new IllegalMonitorStateException();
+            boolean free = false;
+            if (c == 0) {
+                free = true;
+                setExclusiveOwnerThread(null);
+            }
+            setState(c);
+            return free;
+        }
+
+        protected final boolean isHeldExclusively() {
+            // While we must in general read state before owner,
+            // we don't need to do so to check if current thread is owner
+            return getExclusiveOwnerThread() == Thread.currentThread();
+        }
+
+        final ConditionObject newCondition() {
+            return new ConditionObject();
+        }
+
+        // Methods relayed from outer class
+
+        final Thread getOwner() {
+            return getState() == 0 ? null : getExclusiveOwnerThread();
+        }
+
+        final int getHoldCount() {
+            return isHeldExclusively() ? getState() : 0;
+        }
+
+        final boolean isLocked() {
+            return getState() != 0;
+        }
+
+        /**
+         * Reconstitutes this lock instance from a stream.
+         * @param s the stream
+         */
+        private void readObject(java.io.ObjectInputStream s)
+            throws java.io.IOException, ClassNotFoundException {
+            s.defaultReadObject();
+            setState(0); // reset to unlocked state
+        }
+    }
