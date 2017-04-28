@@ -1,15 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="EclipseCodeFormatter">
+    <option name="defaultSettings" value="true" />
+    <option name="formatter" value="ECLIPSE" />
+    <option name="id" value="1490147534081" />
+    <option name="name" value="default" />
+    <option name="pathToConfigFileJava" value="D:/document/LYFormatter.xml" />
+    <option name="selectedJavaProfile" value="LY Convention" />
+  </component>
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
   </component>
   <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/mvc" />
     <file type="web" url="file://$PROJECT_DIR$/springtx" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/springtx/pom.xml" />
+        <option value="$PROJECT_DIR$/firstPhase/pom.xml" />
+        <option value="$PROJECT_DIR$/zk/pom.xml" />
+        <option value="$PROJECT_DIR$/jdk1.8/pom.xml" />
+        <option value="$PROJECT_DIR$/mvc/pom.xml" />
       </list>
     </option>
   </component>

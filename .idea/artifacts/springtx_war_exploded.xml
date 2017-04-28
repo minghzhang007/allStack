@@ -11,12 +11,12 @@
           <element id="library" level="project" name="Maven: commons-logging:commons-logging:1.1.1" />
           <element id="library" level="project" name="Maven: org.springframework:spring-beans:3.2.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-context:3.2.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-aop:3.2.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-expression:3.2.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-context-support:3.2.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:3.2.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-tx:3.2.5.RELEASE" />
           <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-aop:3.2.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-aspects:3.2.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.aspectj:aspectjweaver:1.6.12" />
           <element id="library" level="project" name="Maven: org.springframework:spring-test:3.2.5.RELEASE" />

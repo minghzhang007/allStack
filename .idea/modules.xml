@@ -5,6 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/allStack.iml" filepath="$PROJECT_DIR$/.idea/allStack.iml" />
       <module fileurl="file://$PROJECT_DIR$/firstPhase/firstPhase.iml" filepath="$PROJECT_DIR$/firstPhase/firstPhase.iml" />
       <module fileurl="file://$PROJECT_DIR$/jdk1.6/jdk1.6.iml" filepath="$PROJECT_DIR$/jdk1.6/jdk1.6.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jdk1.8/jdk1.8.iml" filepath="$PROJECT_DIR$/jdk1.8/jdk1.8.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mvc/mvc.iml" filepath="$PROJECT_DIR$/mvc/mvc.iml" />
       <module fileurl="file://$PROJECT_DIR$/springtx/springtx.iml" filepath="$PROJECT_DIR$/springtx/springtx.iml" />
       <module fileurl="file://$PROJECT_DIR$/zk/zk.iml" filepath="$PROJECT_DIR$/zk/zk.iml" />
     </modules>
