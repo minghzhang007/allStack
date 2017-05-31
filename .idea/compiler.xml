@@ -31,12 +31,12 @@
     </annotationProcessing>
     <bytecodeTargetLevel target="1.8">
       <module name="allStack" target="1.8" />
-      <module name="firstPhase" target="1.8" />
+      <module name="firstPhase" target="1.5" />
       <module name="jdk1.6" target="1.8" />
-      <module name="jdk1.8" target="1.8" />
-      <module name="mvc" target="1.8" />
-      <module name="springtx" target="1.8" />
-      <module name="zk" target="1.8" />
+      <module name="jdk1.8" target="1.5" />
+      <module name="mvc" target="1.5" />
+      <module name="springtx" target="1.5" />
+      <module name="zk" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

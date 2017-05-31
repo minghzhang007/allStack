@@ -7,19 +7,18 @@
           <element id="module-output" name="springtx" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="Maven: org.springframework:spring-core:3.2.5.RELEASE" />
-          <element id="library" level="project" name="Maven: commons-logging:commons-logging:1.1.1" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-beans:3.2.5.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-context:3.2.5.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-aop:3.2.5.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-expression:3.2.5.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-context-support:3.2.5.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:3.2.5.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-tx:3.2.5.RELEASE" />
-          <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-aspects:3.2.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-core:4.3.2.RELEASE" />
+          <element id="library" level="project" name="Maven: commons-logging:commons-logging:1.2" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-beans:4.3.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context:4.3.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-aop:4.3.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-expression:4.3.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context-support:4.3.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:4.3.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-tx:4.3.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-aspects:4.3.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.aspectj:aspectjweaver:1.6.12" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-test:3.2.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-test:4.3.2.RELEASE" />
           <element id="library" level="project" name="Maven: com.mchange:c3p0:0.9.5.2" />
           <element id="library" level="project" name="Maven: com.mchange:mchange-commons-java:0.2.11" />
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.1.19" />
